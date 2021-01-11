@@ -3,8 +3,14 @@ import * as styledComponents from 'styled-components/native'
 
 export const appTheme: DefaultTheme = {
   colors: {
-    main: 'cyan',
-    secondary: 'magenta',
+    primary: '#1b64a8',
+    secondary: '#3d8af7',
+    light: '#fff',
+    dark: '#000',
+    success: '#39ecad',
+    warning: '#fda40f',
+    danger: '#e61610',
+    bar: 'rgba(27, 100, 168, 0.9)',
   },
 }
 
