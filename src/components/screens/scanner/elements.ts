@@ -43,3 +43,13 @@ export const MenuIcon = styled(MaterialCommunityIcons)`
 `
 
 export const MenuButton = styled.TouchableOpacity``
+
+export const Marker = styled.View`
+  padding: 30px;
+  border: 2px solid ${(props) => props.theme.colors.success};
+`
+
+export const QRImage = styled.Image`
+  width: 150px;
+  height: 150px;
+`
