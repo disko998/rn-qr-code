@@ -1,7 +1,8 @@
 import React from 'react'
-import { StyleSheet, Linking } from 'react-native'
+import { Linking } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import QRCodeScanner from 'react-native-qrcode-scanner'
+import Orientation from 'react-native-orientation'
 
 import { Routes } from '../../Router'
 import { block_content, qrcode } from '../../../assets/images'
@@ -20,6 +21,15 @@ import {
 
 const ScannerScreen = () => {
   const navigation = useNavigation()
+  const [screenOrientation, setScreenOrientation] = React.useState(
+    Orientation.getInitialOrientation(),
+  )
+
+  React.useEffect(() => {
+    Orientation.addOrientationListener((oritentation) => {
+      setScreenOrientation(oritentation)
+    })
+  }, [])
 
   const onSuccess = React.useCallback((e: any) => {
     Linking.openURL(e.data).catch((err) =>
@@ -27,23 +37,34 @@ const ScannerScreen = () => {
     )
   }, [])
 
+  console.log(screenOrientation)
+
   return (
     <CameraView>
+      <Header>
+        <HeaderText>Check In</HeaderText>
+        <HeaderText>225</HeaderText>
+        <MenuButton
+          hitSlop={DEFAULT_HIT_SLOP}
+          onPress={() => navigation.navigate(Routes.SETTINGS)}>
+          <MenuIcon size={ICON_SIZE} name="dots-vertical" />
+        </MenuButton>
+      </Header>
       <QRCodeScanner
         onRead={onSuccess}
         showMarker
         // flashMode={RNCamera.Constants.FlashMode.torch}
-        topContent={
-          <Header>
-            <HeaderText>Check In</HeaderText>
-            <HeaderText>225</HeaderText>
-            <MenuButton
-              hitSlop={DEFAULT_HIT_SLOP}
-              onPress={() => navigation.navigate(Routes.SETTINGS)}>
-              <MenuIcon size={ICON_SIZE} name="dots-vertical" />
-            </MenuButton>
-          </Header>
-        }
+        // topContent={
+        //   <Header>
+        //     <HeaderText>Check In</HeaderText>
+        //     <HeaderText>225</HeaderText>
+        //     <MenuButton
+        //       hitSlop={DEFAULT_HIT_SLOP}
+        //       onPress={() => navigation.navigate(Routes.SETTINGS)}>
+        //       <MenuIcon size={ICON_SIZE} name="dots-vertical" />
+        //     </MenuButton>
+        //   </Header>
+        // }
         bottomContent={
           <BottomBarImage source={block_content} resizeMode="cover" />
         }
@@ -56,25 +77,5 @@ const ScannerScreen = () => {
     </CameraView>
   )
 }
-
-const styles = StyleSheet.create({
-  centerText: {
-    flex: 1,
-    fontSize: 18,
-    padding: 32,
-    color: '#777',
-  },
-  textBold: {
-    fontWeight: '500',
-    color: '#000',
-  },
-  buttonText: {
-    fontSize: 21,
-    color: 'rgb(0,122,255)',
-  },
-  buttonTouchable: {
-    padding: 16,
-  },
-})
 
 export default ScannerScreen

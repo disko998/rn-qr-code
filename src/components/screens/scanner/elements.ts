@@ -1,12 +1,13 @@
 import styled from 'styled-components/native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { isTablet } from 'react-native-device-info'
+
 
 export const ICON_SIZE = 40
 const BAR_HEIGHT = 60
 
 export const CameraView = styled.View`
   flex: 1;
-  background-color: #fff;
 `
 
 export const Header = styled.View`
@@ -21,6 +22,7 @@ export const Header = styled.View`
   position: absolute;
   top: 0;
   elevation: 1;
+  z-index: 99;
 `
 
 export const HeaderText = styled.Text`
@@ -50,6 +52,6 @@ export const Marker = styled.View`
 `
 
 export const QRImage = styled.Image`
-  width: 150px;
-  height: 150px;
+  width: ${isTablet() ? 300 : 150}px
+  height: ${isTablet() ? 300 : 150}px
 `
