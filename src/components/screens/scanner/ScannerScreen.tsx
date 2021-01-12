@@ -17,7 +17,7 @@ import {
   ICON_SIZE,
   Marker,
   QRImage,
-} from './elements'
+} from './styles'
 
 const ScannerScreen = () => {
   const navigation = useNavigation()
