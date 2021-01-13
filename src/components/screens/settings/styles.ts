@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
   },
 })
 
-export const FormWrapper = styled.View`
+export const FormWrapper = styled.SafeAreaView`
   flex: 1;
   padding: 20px;
   background: ${(props) => props.theme.colors.light};

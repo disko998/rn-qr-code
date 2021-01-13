@@ -1,6 +1,7 @@
 import styled from 'styled-components/native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { isTablet } from 'react-native-device-info'
+import { getStatusBarHeight } from 'react-native-status-bar-height'
 
 export const ICON_SIZE = 40
 const BAR_HEIGHT = 60
@@ -11,23 +12,25 @@ export const CameraView = styled.View`
 
 export const Header = styled.View`
   width: 100%;
-  height: ${BAR_HEIGHT}px;
+  min-height: ${BAR_HEIGHT}px;
   background-color: ${(props) => props.theme.colors.bar};
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
-  padding: 0 15px;
+  padding-horizontal: 15px;
   position: absolute;
   top: 0;
   elevation: 1;
   z-index: 99;
 `
+//  padding-top: ${getStatusBarHeight()}px;
 
-export const HeaderText = styled.Text`
+export const HeaderText = styled.Text<{ translate?: boolean }>`
   font-weight: bold;
   font-size: 24px;
   color: ${(props) => props.theme.colors.light};
+  ${(props) => (props.translate ? 'transform: translateX(-25px)' : '')};
 `
 
 export const BottomBarImage = styled.ImageBackground`
