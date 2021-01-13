@@ -1,6 +1,7 @@
 import React from 'react'
-import { CheckBox, Button } from 'react-native-elements'
+import { CheckBox } from 'react-native-elements'
 import { useFormik } from 'formik'
+import { ScrollView } from 'react-native'
 
 import { settingsSchema } from './schema'
 import {
@@ -35,73 +36,79 @@ export default function SettingsScreen() {
 
   return (
     <FormWrapper>
-      <Section>
-        <StyledInput
-          label="Device Name"
-          placeholder="Device"
-          labelStyle={styles.label}
-          containerStyle={styles.containerStyle}
-          inputContainerStyle={styles.inputContainerStyle}
-          value={form.values.deviceName}
-          onChangeText={form.handleChange('deviceName')}
-          errorMessage={form.errors.deviceName}
-        />
-      </Section>
-      <Section>
-        <StyledInput
-          label="Event"
-          placeholder="Event"
-          labelStyle={styles.label}
-          containerStyle={styles.containerStyle}
-          inputContainerStyle={styles.inputContainerStyle}
-          value={form.values.event}
-          onChangeText={form.handleChange('event')}
-          errorMessage={form.errors.deviceName}
-        />
-      </Section>
-      <Section>
-        <CheckBox
-          title="Check IN"
-          checked={form.values.checkState === CheckState.CHECK_IN}
-          onPress={() => form.setFieldValue('checkState', CheckState.CHECK_IN)}
-          containerStyle={styles.checkBoxContainer}
-          textStyle={styles.label}
-          checkedColor={appTheme.colors.success}
-        />
-        <CheckBox
-          title="Check OUT"
-          checked={form.values.checkState === CheckState.CHECK_OUT}
-          onPress={() => form.setFieldValue('checkState', CheckState.CHECK_OUT)}
-          containerStyle={styles.checkBoxContainer}
-          textStyle={styles.label}
-          checkedColor={appTheme.colors.success}
-        />
-      </Section>
-      <Section>
-        <CheckBox
-          title="Back Camera"
-          checked={form.values.cameraType === 'back'}
-          onPress={() => form.setFieldValue('cameraType', 'back')}
-          containerStyle={styles.checkBoxContainer}
-          textStyle={styles.label}
-          checkedColor={appTheme.colors.success}
-        />
-        <CheckBox
-          title="Front Camera"
-          checked={form.values.cameraType === 'front'}
-          onPress={() => form.setFieldValue('cameraType', 'front')}
-          containerStyle={styles.checkBoxContainer}
-          textStyle={styles.label}
-          checkedColor={appTheme.colors.success}
-        />
-      </Section>
-      <Section center>
-        <SubmitButton
-          title="Save"
-          onPress={form.handleSubmit}
-          titleStyle={styles.btnTitle}
-        />
-      </Section>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Section>
+          <StyledInput
+            label="Device Name"
+            placeholder="Device"
+            labelStyle={styles.label}
+            containerStyle={styles.containerStyle}
+            inputContainerStyle={styles.inputContainerStyle}
+            value={form.values.deviceName}
+            onChangeText={form.handleChange('deviceName')}
+            errorMessage={form.errors.deviceName}
+          />
+        </Section>
+        <Section>
+          <StyledInput
+            label="Event"
+            placeholder="Event"
+            labelStyle={styles.label}
+            containerStyle={styles.containerStyle}
+            inputContainerStyle={styles.inputContainerStyle}
+            value={form.values.event}
+            onChangeText={form.handleChange('event')}
+            errorMessage={form.errors.deviceName}
+          />
+        </Section>
+        <Section>
+          <CheckBox
+            title="Check IN"
+            checked={form.values.checkState === CheckState.CHECK_IN}
+            onPress={() =>
+              form.setFieldValue('checkState', CheckState.CHECK_IN)
+            }
+            containerStyle={styles.checkBoxContainer}
+            textStyle={styles.label}
+            checkedColor={appTheme.colors.success}
+          />
+          <CheckBox
+            title="Check OUT"
+            checked={form.values.checkState === CheckState.CHECK_OUT}
+            onPress={() =>
+              form.setFieldValue('checkState', CheckState.CHECK_OUT)
+            }
+            containerStyle={styles.checkBoxContainer}
+            textStyle={styles.label}
+            checkedColor={appTheme.colors.success}
+          />
+        </Section>
+        <Section>
+          <CheckBox
+            title="Back Camera"
+            checked={form.values.cameraType === 'back'}
+            onPress={() => form.setFieldValue('cameraType', 'back')}
+            containerStyle={styles.checkBoxContainer}
+            textStyle={styles.label}
+            checkedColor={appTheme.colors.success}
+          />
+          <CheckBox
+            title="Front Camera"
+            checked={form.values.cameraType === 'front'}
+            onPress={() => form.setFieldValue('cameraType', 'front')}
+            containerStyle={styles.checkBoxContainer}
+            textStyle={styles.label}
+            checkedColor={appTheme.colors.success}
+          />
+        </Section>
+        <Section center>
+          <SubmitButton
+            title="Save"
+            onPress={form.handleSubmit}
+            titleStyle={styles.btnTitle}
+          />
+        </Section>
+      </ScrollView>
     </FormWrapper>
   )
 }

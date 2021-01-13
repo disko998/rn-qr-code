@@ -26,8 +26,8 @@ const ScannerScreen = () => {
   )
 
   React.useEffect(() => {
-    Orientation.addOrientationListener((oritentation) => {
-      setScreenOrientation(oritentation)
+    Orientation.addOrientationListener((orientation) => {
+      setScreenOrientation(orientation)
     })
   }, [])
 
@@ -43,7 +43,7 @@ const ScannerScreen = () => {
     <CameraView>
       <Header>
         <HeaderText>Check In</HeaderText>
-        <HeaderText>225</HeaderText>
+        <HeaderText translate>225</HeaderText>
         <MenuButton
           hitSlop={DEFAULT_HIT_SLOP}
           onPress={() => navigation.navigate(Routes.SETTINGS)}>
