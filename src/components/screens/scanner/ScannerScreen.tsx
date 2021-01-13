@@ -26,9 +26,11 @@ const ScannerScreen = () => {
   )
 
   React.useEffect(() => {
-    Orientation.addOrientationListener((oritentation) => {
-      setScreenOrientation(oritentation)
-    })
+    Orientation.addOrientationListener(
+      (orientation: Orientation.orientation) => {
+        setScreenOrientation(orientation)
+      },
+    )
   }, [])
 
   const onSuccess = React.useCallback((e: any) => {

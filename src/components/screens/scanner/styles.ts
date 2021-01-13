@@ -2,7 +2,6 @@ import styled from 'styled-components/native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { isTablet } from 'react-native-device-info'
 
-
 export const ICON_SIZE = 40
 const BAR_HEIGHT = 60
 
@@ -52,6 +51,6 @@ export const Marker = styled.View`
 `
 
 export const QRImage = styled.Image`
-  width: ${isTablet() ? 300 : 150}px
-  height: ${isTablet() ? 300 : 150}px
+  width: ${isTablet() ? 300 : 130}px;
+  height: ${isTablet() ? 300 : 130}px;
 `

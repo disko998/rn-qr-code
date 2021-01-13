@@ -1,5 +1,5 @@
 import React from 'react'
-import { CheckBox, Button } from 'react-native-elements'
+import { CheckBox } from 'react-native-elements'
 import { useFormik } from 'formik'
 
 import { settingsSchema } from './schema'
