@@ -19,8 +19,11 @@ export const styles = StyleSheet.create({
 
 export const FormWrapper = styled.SafeAreaView`
   flex: 1;
-  padding: ${isTablet() ? 20 : 15}px;
   background: ${(props) => props.theme.colors.light};
+`
+
+export const StyledScroll = styled.ScrollView`
+  padding: ${isTablet() ? 20 : 15}px;
 `
 
 export const Section = styled.View<{ center?: boolean }>`

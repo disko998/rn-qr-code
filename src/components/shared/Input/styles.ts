@@ -9,7 +9,7 @@ const MAX_INPUT_WIDTH = isTablet() ? '500px' : '100%'
 export const styles = StyleSheet.create({
   containerStyle: {
     width: '100%',
-    maxWidth: MAX_INPUT_WIDTH,
+    maxWidth: isTablet() ? 500 : '100%',
     height: 50,
   },
   itemStyle: {

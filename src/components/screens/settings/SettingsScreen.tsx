@@ -1,12 +1,11 @@
 import React from 'react'
 import { CheckBox } from 'react-native-elements'
 import { useFormik } from 'formik'
-import { ScrollView } from 'react-native'
 
 import { settingsSchema } from './schema'
-import { FormWrapper, Section, styles } from './styles'
 import { appTheme } from '../../../styles'
 import { Input } from '../../shared'
+import { FormWrapper, Section, styles, StyledScroll } from './styles'
 
 export enum CheckState {
   CHECK_IN = 'Check in',
@@ -32,7 +31,7 @@ export default function SettingsScreen() {
 
   return (
     <FormWrapper>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <StyledScroll showsVerticalScrollIndicator={false}>
         <Section>
           <Input
             label="Device Name"
@@ -115,7 +114,7 @@ export default function SettingsScreen() {
         <Section center>
           <Input.Button label="Save" onPress={form.handleSubmit} />
         </Section>
-      </ScrollView>
+      </StyledScroll>
     </FormWrapper>
   )
 }

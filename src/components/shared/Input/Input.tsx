@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextInputProps, TouchableOpacityProps } from 'react-native'
+import { Platform, TextInputProps, TouchableOpacityProps } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
 
 import {
@@ -39,11 +39,18 @@ Input.Button = ({ label, ...btnProps }: ButtonProps) => {
 
 Input.Select = ({ label, items, value, onChangeItem }: SelectProps) => {
   return (
-    <Container>
+    <Container
+      style={
+        Platform.OS !== 'android' && {
+          zIndex: 10,
+        }
+      }>
       {label && <Label>{label}</Label>}
       <DropDownPicker
+        zIndex={999}
         items={items}
         containerStyle={styles.containerStyle}
+        dropDownStyle={{ marginTop: 2 }}
         itemStyle={styles.itemStyle}
         defaultValue={value}
         onChangeItem={onChangeItem}

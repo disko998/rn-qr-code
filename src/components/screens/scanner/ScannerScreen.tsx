@@ -45,20 +45,18 @@ const ScannerScreen = () => {
 
   return (
     <Wrapper>
+      <Header>
+        <HeaderText>Check In</HeaderText>
+        <HeaderText translate>225</HeaderText>
+        <MenuButton
+          hitSlop={DEFAULT_HIT_SLOP}
+          onPress={() => navigation.navigate(Routes.SETTINGS)}>
+          <MenuIcon size={ICON_SIZE} name="dots-vertical" />
+        </MenuButton>
+      </Header>
       <QRCodeScanner
         onRead={onSuccess}
         showMarker
-        topContent={
-          <Header>
-            <HeaderText>Check In</HeaderText>
-            <HeaderText translate>225</HeaderText>
-            <MenuButton
-              hitSlop={DEFAULT_HIT_SLOP}
-              onPress={() => navigation.navigate(Routes.SETTINGS)}>
-              <MenuIcon size={ICON_SIZE} name="dots-vertical" />
-            </MenuButton>
-          </Header>
-        }
         bottomContent={
           <BottomBarImage source={block_content} resizeMode="cover" />
         }
@@ -70,7 +68,7 @@ const ScannerScreen = () => {
       />
 
       <Alert
-        type="warn"
+        type="success"
         isVisible={showAlert}
         toggleOverlay={() => setShowAlert((prev) => !prev)}
       />
