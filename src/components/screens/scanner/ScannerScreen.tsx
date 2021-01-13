@@ -4,11 +4,12 @@ import { useNavigation } from '@react-navigation/native'
 import QRCodeScanner from 'react-native-qrcode-scanner'
 import Orientation from 'react-native-orientation'
 
+import { Alert } from '../../shared'
 import { Routes } from '../../Router'
 import { block_content, qrcode } from '../../../assets/images'
 import { DEFAULT_HIT_SLOP } from '../../../styles'
 import {
-  CameraView,
+  Wrapper,
   Header,
   HeaderText,
   BottomBarImage,
@@ -21,6 +22,7 @@ import {
 
 const ScannerScreen = () => {
   const navigation = useNavigation()
+  const [showAlert, setShowAlert] = React.useState(false)
   const [screenOrientation, setScreenOrientation] = React.useState(
     Orientation.getInitialOrientation(),
   )
@@ -39,34 +41,24 @@ const ScannerScreen = () => {
     )
   }, [])
 
-  console.log(screenOrientation)
+  console.log('Screen', screenOrientation)
 
   return (
-    <CameraView>
-      <Header>
-        <HeaderText>Check In</HeaderText>
-        <HeaderText translate>225</HeaderText>
-        <MenuButton
-          hitSlop={DEFAULT_HIT_SLOP}
-          onPress={() => navigation.navigate(Routes.SETTINGS)}>
-          <MenuIcon size={ICON_SIZE} name="dots-vertical" />
-        </MenuButton>
-      </Header>
+    <Wrapper>
       <QRCodeScanner
         onRead={onSuccess}
         showMarker
-        // flashMode={RNCamera.Constants.FlashMode.torch}
-        // topContent={
-        //   <Header>
-        //     <HeaderText>Check In</HeaderText>
-        //     <HeaderText>225</HeaderText>
-        //     <MenuButton
-        //       hitSlop={DEFAULT_HIT_SLOP}
-        //       onPress={() => navigation.navigate(Routes.SETTINGS)}>
-        //       <MenuIcon size={ICON_SIZE} name="dots-vertical" />
-        //     </MenuButton>
-        //   </Header>
-        // }
+        topContent={
+          <Header>
+            <HeaderText>Check In</HeaderText>
+            <HeaderText translate>225</HeaderText>
+            <MenuButton
+              hitSlop={DEFAULT_HIT_SLOP}
+              onPress={() => navigation.navigate(Routes.SETTINGS)}>
+              <MenuIcon size={ICON_SIZE} name="dots-vertical" />
+            </MenuButton>
+          </Header>
+        }
         bottomContent={
           <BottomBarImage source={block_content} resizeMode="cover" />
         }
@@ -76,7 +68,13 @@ const ScannerScreen = () => {
           </Marker>
         }
       />
-    </CameraView>
+
+      <Alert
+        type="warn"
+        isVisible={showAlert}
+        toggleOverlay={() => setShowAlert((prev) => !prev)}
+      />
+    </Wrapper>
   )
 }
 

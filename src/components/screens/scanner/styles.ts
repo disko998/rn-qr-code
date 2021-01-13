@@ -3,10 +3,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { isTablet } from 'react-native-device-info'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 
-export const ICON_SIZE = 40
+export const ICON_SIZE = 35
 const BAR_HEIGHT = 60
 
-export const CameraView = styled.View`
+export const Wrapper = styled.View`
   flex: 1;
 `
 
@@ -22,9 +22,8 @@ export const Header = styled.View`
   position: absolute;
   top: 0;
   elevation: 1;
-  z-index: 99;
+  z-index: 10;
 `
-//  padding-top: ${getStatusBarHeight()}px;
 
 export const HeaderText = styled.Text<{ translate?: boolean }>`
   font-weight: bold;
@@ -37,9 +36,7 @@ export const BottomBarImage = styled.ImageBackground`
   height: ${BAR_HEIGHT}px;
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
-  elevation: 1;
+  width: 100%;
 `
 
 export const MenuIcon = styled(MaterialCommunityIcons)`
