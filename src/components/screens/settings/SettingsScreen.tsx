@@ -4,14 +4,9 @@ import { useFormik } from 'formik'
 import { ScrollView } from 'react-native'
 
 import { settingsSchema } from './schema'
-import {
-  FormWrapper,
-  StyledInput,
-  Section,
-  SubmitButton,
-  styles,
-} from './styles'
+import { FormWrapper, Section, styles } from './styles'
 import { appTheme } from '../../../styles'
+import { Input } from '../../shared'
 
 export enum CheckState {
   CHECK_IN = 'Check in',
@@ -23,6 +18,7 @@ export default function SettingsScreen() {
     initialValues: {
       deviceName: '',
       event: '',
+      url: '',
       checkState: CheckState.CHECK_IN,
       cameraType: 'back',
     },
@@ -38,27 +34,42 @@ export default function SettingsScreen() {
     <FormWrapper>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Section>
-          <StyledInput
+          <Input
             label="Device Name"
             placeholder="Device"
-            labelStyle={styles.label}
-            containerStyle={styles.containerStyle}
-            inputContainerStyle={styles.inputContainerStyle}
             value={form.values.deviceName}
             onChangeText={form.handleChange('deviceName')}
             errorMessage={form.errors.deviceName}
           />
         </Section>
         <Section>
-          <StyledInput
+          <Input.Select
             label="Event"
-            placeholder="Event"
-            labelStyle={styles.label}
-            containerStyle={styles.containerStyle}
-            inputContainerStyle={styles.inputContainerStyle}
+            value="Plenary Session"
+            items={[
+              {
+                label: 'Plenary Session',
+                value: 'Plenary Session',
+              },
+              {
+                label: 'UK',
+                value: 'uk',
+              },
+              {
+                label: 'France',
+                value: 'france',
+              },
+            ]}
+            onChangeItem={(item) => console.log(item)}
+          />
+        </Section>
+        <Section>
+          <Input
+            label="URL"
+            placeholder="https://example.com"
             value={form.values.event}
-            onChangeText={form.handleChange('event')}
-            errorMessage={form.errors.deviceName}
+            onChangeText={form.handleChange('url')}
+            errorMessage={form.errors.url}
           />
         </Section>
         <Section>
@@ -102,11 +113,7 @@ export default function SettingsScreen() {
           />
         </Section>
         <Section center>
-          <SubmitButton
-            title="Save"
-            onPress={form.handleSubmit}
-            titleStyle={styles.btnTitle}
-          />
+          <Input.Button label="Save" onPress={form.handleSubmit} />
         </Section>
       </ScrollView>
     </FormWrapper>

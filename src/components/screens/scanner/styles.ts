@@ -30,7 +30,7 @@ export const HeaderText = styled.Text<{ translate?: boolean }>`
   font-weight: bold;
   font-size: 24px;
   color: ${(props) => props.theme.colors.light};
-  ${(props) => (props.translate ? 'transform: translateX(-25px)' : '')};
+  ${(props) => (props.translate ? 'transform: translateX(-10px)' : '')};
 `
 
 export const BottomBarImage = styled.ImageBackground`
