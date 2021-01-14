@@ -1,11 +1,15 @@
-import { observable, action } from 'mobx'
+import { observable, action, makeAutoObservable } from 'mobx'
 
 export class SettingsStore {
-  @observable cameraType: 'front' | 'back' = 'front'
-  @observable checkState: CheckState = CheckState.CHECK_IN
-  @observable deviceName: string = ''
-  @observable event: string = 'Plenary Session'
-  @observable url: string = 'https://letsconnect.store/'
+  cameraType: 'front' | 'back' = 'front'
+  checkState: CheckState = CheckState.CHECK_IN
+  deviceName: string = ''
+  event: string = 'Plenary Session'
+  url: string = 'https://letsconnect.store/'
+
+  constructor() {
+    makeAutoObservable(this)
+  }
 
   @action
   updateSettings({ cameraType, checkState, deviceName, event, url }: Settings) {
