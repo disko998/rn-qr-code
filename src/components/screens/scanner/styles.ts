@@ -1,10 +1,9 @@
 import styled from 'styled-components/native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { isTablet } from 'react-native-device-info'
-import { getStatusBarHeight } from 'react-native-status-bar-height'
 
 export const ICON_SIZE = 35
-const BAR_HEIGHT = 60
+const BAR_HEIGHT = isTablet() ? 80 : 60
 
 export const Wrapper = styled.View`
   flex: 1;
