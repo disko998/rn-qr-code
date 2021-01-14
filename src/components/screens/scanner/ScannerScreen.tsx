@@ -3,6 +3,7 @@ import { Linking } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import QRCodeScanner from 'react-native-qrcode-scanner'
 import Orientation from 'react-native-orientation'
+import { observer } from 'mobx-react-lite'
 
 import { Alert } from '../../shared'
 import { Routes } from '../../Router'
@@ -19,8 +20,10 @@ import {
   Marker,
   QRImage,
 } from './styles'
+import { useAppStore } from '../../../stores'
 
-const ScannerScreen = () => {
+const ScannerScreen = observer(() => {
+  const { settingsStore } = useAppStore()
   const navigation = useNavigation()
   const [showAlert, setShowAlert] = React.useState(false)
   const [screenOrientation, setScreenOrientation] = React.useState(
@@ -41,12 +44,10 @@ const ScannerScreen = () => {
     )
   }, [])
 
-  console.log('Screen', screenOrientation)
-
   return (
     <Wrapper>
       <Header>
-        <HeaderText>Check In</HeaderText>
+        <HeaderText>{settingsStore.checkState}</HeaderText>
         <HeaderText translate>225</HeaderText>
         <MenuButton
           hitSlop={DEFAULT_HIT_SLOP}
@@ -55,7 +56,7 @@ const ScannerScreen = () => {
         </MenuButton>
       </Header>
       <QRCodeScanner
-        cameraType="front"
+        cameraType={settingsStore.cameraType}
         onRead={onSuccess}
         showMarker
         bottomContent={
@@ -80,6 +81,6 @@ const ScannerScreen = () => {
       />
     </Wrapper>
   )
-}
+})
 
 export default ScannerScreen

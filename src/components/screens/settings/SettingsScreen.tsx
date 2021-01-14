@@ -1,31 +1,34 @@
 import React from 'react'
 import { CheckBox } from 'react-native-elements'
 import { useFormik } from 'formik'
+import { useObserver } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import { settingsSchema } from './schema'
 import { appTheme } from '../../../styles'
 import { Input } from '../../shared'
 import { FormWrapper, Section, styles, StyledScroll } from './styles'
+import { useAppStore, CheckState } from '../../../stores'
 
-export enum CheckState {
-  CHECK_IN = 'Check in',
-  CHECK_OUT = 'Check out',
-}
+const SettingsScreen = observer(() => {
+  const { settingsStore } = useAppStore()
 
-export default function SettingsScreen() {
+  console.log('Settings Screen', settingsStore)
+
   const form = useFormik({
     initialValues: {
-      deviceName: '',
-      event: '',
-      url: '',
-      checkState: CheckState.CHECK_IN,
-      cameraType: 'front',
+      deviceName: settingsStore.deviceName,
+      event: settingsStore.event,
+      url: settingsStore.url,
+      checkState: settingsStore.checkState,
+      cameraType: settingsStore.cameraType,
     },
     validationSchema: settingsSchema,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: (values) => {
-      console.log(values)
+      console.log('SUBMIT', values)
+      settingsStore.updateSettings(values)
     },
   })
 
@@ -66,7 +69,7 @@ export default function SettingsScreen() {
           <Input
             label="URL"
             placeholder="https://example.com"
-            value={form.values.event}
+            value={form.values.url}
             onChangeText={form.handleChange('url')}
             errorMessage={form.errors.url}
           />
@@ -117,4 +120,6 @@ export default function SettingsScreen() {
       </StyledScroll>
     </FormWrapper>
   )
-}
+})
+
+export default SettingsScreen

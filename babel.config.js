@@ -1,16 +1,7 @@
 module.exports = {
   presets: ['module:metro-react-native-babel-preset'],
-  //   plugins: [
-  //     [
-  //       require.resolve('babel-plugin-module-resolver'),
-  //       {
-  //         cwd: 'babelrc',
-  //         extensions: ['.ts', '.tsx', '.js', '.ios.js', '.android.js'],
-  //         alias: {
-  //           '@cuteapp': './src',
-  //         },
-  //       },
-  //     ],
-  //     'jest-hoist',
-  //   ],
+  plugins: [
+    ['@babel/plugin-proposal-decorators', { legacy: true }],
+    ['@babel/plugin-proposal-class-properties', { loose: false }],
+  ],
 }
