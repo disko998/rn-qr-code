@@ -6,7 +6,7 @@ import Orientation from 'react-native-orientation'
 import { observer } from 'mobx-react-lite'
 
 import { Alert } from '../../shared'
-import { Routes } from '../../Router'
+import { Routes } from '../../../config'
 import { block_content, qrcode } from '../../../assets/images'
 import { DEFAULT_HIT_SLOP } from '../../../styles'
 import {
@@ -48,7 +48,7 @@ const ScannerScreen = observer(() => {
     <Wrapper>
       <Header>
         <HeaderText>{settingsStore.checkState}</HeaderText>
-        <HeaderText translate>225</HeaderText>
+        <HeaderText>225</HeaderText>
         <MenuButton
           hitSlop={DEFAULT_HIT_SLOP}
           onPress={() => navigation.navigate(Routes.SETTINGS)}>

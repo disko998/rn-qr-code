@@ -5,13 +5,10 @@ import { StyleSheet } from 'react-native'
 
 import { ScannerScreen, SettingsScreen } from './screens'
 import { appTheme } from '../styles'
-
-export enum Routes {
-  SCANNER = 'Scanner',
-  SETTINGS = 'Settings',
-}
+import { Routes } from '../config'
 
 const Stack = createStackNavigator()
+
 const Router = () => {
   return (
     <NavigationContainer>
