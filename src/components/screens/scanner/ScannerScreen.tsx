@@ -55,6 +55,7 @@ const ScannerScreen = () => {
         </MenuButton>
       </Header>
       <QRCodeScanner
+        cameraType="front"
         onRead={onSuccess}
         showMarker
         bottomContent={
@@ -68,9 +69,14 @@ const ScannerScreen = () => {
       />
 
       <Alert
+        title="Welcome Alexander"
+        message="Market Franchising - ﻿Brasserie de l'abbaye du Val-dieu"
+        fulName="Alexander Vansteelant"
         type="success"
         isVisible={showAlert}
         toggleOverlay={() => setShowAlert((prev) => !prev)}
+        onNoPress={() => setShowAlert(false)}
+        onYesPress={() => setShowAlert(false)}
       />
     </Wrapper>
   )

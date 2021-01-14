@@ -19,7 +19,7 @@ export default function SettingsScreen() {
       event: '',
       url: '',
       checkState: CheckState.CHECK_IN,
-      cameraType: 'back',
+      cameraType: 'front',
     },
     validationSchema: settingsSchema,
     validateOnBlur: false,
@@ -95,17 +95,17 @@ export default function SettingsScreen() {
         </Section>
         <Section>
           <CheckBox
-            title="Back Camera"
-            checked={form.values.cameraType === 'back'}
-            onPress={() => form.setFieldValue('cameraType', 'back')}
+            title="Front Camera"
+            checked={form.values.cameraType === 'front'}
+            onPress={() => form.setFieldValue('cameraType', 'front')}
             containerStyle={styles.checkBoxContainer}
             textStyle={styles.label}
             checkedColor={appTheme.colors.success}
           />
           <CheckBox
-            title="Front Camera"
-            checked={form.values.cameraType === 'front'}
-            onPress={() => form.setFieldValue('cameraType', 'front')}
+            title="Back Camera"
+            checked={form.values.cameraType === 'back'}
+            onPress={() => form.setFieldValue('cameraType', 'back')}
             containerStyle={styles.checkBoxContainer}
             textStyle={styles.label}
             checkedColor={appTheme.colors.success}
