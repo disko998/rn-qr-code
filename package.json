@@ -17,7 +17,6 @@
     "@react-navigation/stack": "^5.12.8",
     "formik": "^2.2.6",
     "mobx": "^6.0.4",
-    "mobx-react": "^7.0.5",
     "mobx-react-lite": "^3.1.6",
     "react": "16.13.1",
     "react-native": "0.63.4",
@@ -38,10 +37,11 @@
     "yup": "^0.32.8"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-decorators": "^7.12.12",
     "@babel/core": "^7.8.4",
     "@babel/runtime": "^7.8.4",
     "@react-native-community/eslint-config": "^1.1.0",
-    "@types/jest": "^25.2.3",
     "@types/react-native": "^0.63.2",
     "@types/react-native-orientation": "^5.0.1",
     "@types/react-native-vector-icons": "^6.4.6",
@@ -49,23 +49,10 @@
     "@types/styled-components": "^5.1.7",
     "@types/styled-components-react-native": "^5.1.0",
     "@types/yup": "^0.29.11",
-    "babel-jest": "^25.1.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "eslint": "^6.5.1",
-    "jest": "^25.1.0",
     "metro-react-native-babel-preset": "^0.59.0",
     "react-test-renderer": "16.13.1",
     "typescript": "^3.8.3"
-  },
-  "jest": {
-    "preset": "react-native",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
   }
 }
