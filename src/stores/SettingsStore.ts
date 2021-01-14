@@ -1,4 +1,5 @@
-import { observable, action, makeAutoObservable } from 'mobx'
+import { action, makeAutoObservable } from 'mobx'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export class SettingsStore {
   cameraType: 'front' | 'back' = 'front'
@@ -9,15 +10,25 @@ export class SettingsStore {
 
   constructor() {
     makeAutoObservable(this)
+
+    AsyncStorage.getItem('@settings').then((data) => {
+      data && this.updateSettings(JSON.parse(data))
+    })
   }
 
   @action
-  updateSettings({ cameraType, checkState, deviceName, event, url }: Settings) {
+  async updateSettings(settings: Settings): Promise<boolean> {
+    const { cameraType, checkState, deviceName, event, url } = settings
+
     this.cameraType = cameraType
     this.checkState = checkState
     this.deviceName = deviceName
     this.event = event
     this.url = url
+
+    await AsyncStorage.setItem('@settings', JSON.stringify(settings))
+
+    return true
   }
 }
 

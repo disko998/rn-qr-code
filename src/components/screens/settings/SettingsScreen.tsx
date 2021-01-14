@@ -9,15 +9,28 @@ import { Input } from '../../shared'
 import { FormWrapper, Section, styles, StyledScroll } from './styles'
 import { useAppStore, CheckState } from '../../../stores'
 
+const mockItems = [
+  {
+    label: 'Plenary Session',
+    value: 'Plenary Session',
+  },
+  {
+    label: 'UK',
+    value: 'uk',
+  },
+  {
+    label: 'France',
+    value: 'france',
+  },
+]
+
 const SettingsScreen = observer(() => {
   const { settingsStore } = useAppStore()
-
-  console.log('Settings Screen', settingsStore)
 
   const form = useFormik({
     initialValues: {
       deviceName: settingsStore.deviceName,
-      event: settingsStore.event,
+      event: settingsStore.event || mockItems[0].value,
       url: settingsStore.url,
       checkState: settingsStore.checkState,
       cameraType: settingsStore.cameraType,
@@ -26,7 +39,6 @@ const SettingsScreen = observer(() => {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: (values) => {
-      console.log('SUBMIT', values)
       settingsStore.updateSettings(values)
     },
   })
@@ -46,22 +58,9 @@ const SettingsScreen = observer(() => {
         <Section>
           <Input.Select
             label="Event"
-            value="Plenary Session"
-            items={[
-              {
-                label: 'Plenary Session',
-                value: 'Plenary Session',
-              },
-              {
-                label: 'UK',
-                value: 'uk',
-              },
-              {
-                label: 'France',
-                value: 'france',
-              },
-            ]}
-            onChangeItem={(item) => console.log(item)}
+            value={form.values.event}
+            items={mockItems}
+            onChangeItem={({ value }) => form.setFieldValue('event', value)}
           />
         </Section>
         <Section>
