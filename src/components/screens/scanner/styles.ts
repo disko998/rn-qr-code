@@ -45,7 +45,7 @@ export const MenuIcon = styled(MaterialCommunityIcons)`
 export const MenuButton = styled.TouchableOpacity``
 
 export const Marker = styled.View`
-  padding: 30px;
+  padding: ${isTablet() ? 80 : 30}px;
   border: 2px solid ${(props) => props.theme.colors.success};
 `
 
