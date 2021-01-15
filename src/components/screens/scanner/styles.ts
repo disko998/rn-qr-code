@@ -2,7 +2,7 @@ import styled from 'styled-components/native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { isTablet } from 'react-native-device-info'
 
-export const ICON_SIZE = 35
+export const ICON_SIZE = isTablet() ? 40 : 35
 const BAR_HEIGHT = isTablet() ? 80 : 60
 
 export const Wrapper = styled.View`
@@ -26,7 +26,7 @@ export const Header = styled.View`
 
 export const HeaderText = styled.Text<{ translate?: boolean }>`
   font-weight: bold;
-  font-size: 24px;
+  font-size: ${isTablet() ? 30 : 24}px;
   color: ${(props) => props.theme.colors.light};
   ${(props) => (props.translate ? 'transform: translateX(-10px)' : '')};
 `
