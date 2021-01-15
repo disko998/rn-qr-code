@@ -45,6 +45,7 @@ const SettingsScreen = observer(() => {
         type: 'success',
         text1: 'Saved!',
         visibilityTime: 1000,
+        position: 'bottom',
       })
     },
   })
