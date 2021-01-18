@@ -2,7 +2,7 @@ import React from 'react'
 import { Linking } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import QRCodeScanner from 'react-native-qrcode-scanner'
-import Orientation from 'react-native-orientation'
+// import Orientation from 'react-native-orientation'
 import { observer } from 'mobx-react-lite'
 
 import { Alert } from '../../shared'
@@ -26,17 +26,17 @@ const ScannerScreen = observer(() => {
   const { settingsStore } = useAppStore()
   const navigation = useNavigation()
   const [showAlert, setShowAlert] = React.useState(false)
-  const [screenOrientation, setScreenOrientation] = React.useState(
-    Orientation.getInitialOrientation(),
-  )
+  //   const [screenOrientation, setScreenOrientation] = React.useState(
+  //     Orientation.getInitialOrientation(),
+  //   )
 
-  React.useEffect(() => {
-    Orientation.addOrientationListener(
-      (orientation: Orientation.orientation) => {
-        setScreenOrientation(orientation)
-      },
-    )
-  }, [])
+  //   React.useEffect(() => {
+  //     Orientation.addOrientationListener(
+  //       (orientation: Orientation.orientation) => {
+  //         setScreenOrientation(orientation)
+  //       },
+  //     )
+  //   }, [])
 
   const onSuccess = React.useCallback((e: any) => {
     Linking.openURL(e.data).catch((err) =>
