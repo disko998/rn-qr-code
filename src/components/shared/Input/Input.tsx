@@ -38,6 +38,7 @@ Input.Button = ({ label, ...btnProps }: ButtonProps) => {
 }
 
 Input.Select = ({ label, items, value, onChangeItem }: SelectProps) => {
+  console.log(items)
   return (
     <Container
       style={

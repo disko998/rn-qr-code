@@ -1,5 +1,4 @@
 import React from 'react'
-import { Linking } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import QRCodeScanner from 'react-native-qrcode-scanner'
 // import Orientation from 'react-native-orientation'
@@ -23,31 +22,25 @@ import {
 import { useAppStore } from '../../../stores'
 
 const ScannerScreen = observer(() => {
-  const { settingsStore } = useAppStore()
+  const { settings } = useAppStore()
   const navigation = useNavigation()
   const [showAlert, setShowAlert] = React.useState(false)
-  //   const [screenOrientation, setScreenOrientation] = React.useState(
-  //     Orientation.getInitialOrientation(),
-  //   )
 
-  //   React.useEffect(() => {
-  //     Orientation.addOrientationListener(
-  //       (orientation: Orientation.orientation) => {
-  //         setScreenOrientation(orientation)
-  //       },
-  //     )
-  //   }, [])
+  React.useEffect(() => {
+    settings.loadEvents()
+  }, [])
 
   const onSuccess = React.useCallback((e: any) => {
-    Linking.openURL(e.data).catch((err) =>
-      console.error('An error occured', err),
-    )
+    console.log(e)
+    // Linking.openURL(e.data).catch((err) =>
+    //   console.error('An error occured', err),
+    // )
   }, [])
 
   return (
     <Wrapper>
       <Header>
-        <HeaderText>{settingsStore.checkState}</HeaderText>
+        <HeaderText>{settings.checkState}</HeaderText>
         <HeaderText>225</HeaderText>
         <MenuButton
           hitSlop={DEFAULT_HIT_SLOP}
@@ -56,7 +49,7 @@ const ScannerScreen = observer(() => {
         </MenuButton>
       </Header>
       <QRCodeScanner
-        cameraType={settingsStore.cameraType}
+        cameraType={settings.cameraType}
         onRead={onSuccess}
         showMarker
         bottomContent={

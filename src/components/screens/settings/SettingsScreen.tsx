@@ -3,6 +3,7 @@ import { CheckBox } from 'react-native-elements'
 import { useFormik } from 'formik'
 import { observer } from 'mobx-react-lite'
 import Toast from 'react-native-toast-message'
+import { Text } from 'react-native'
 
 import { settingsSchema } from './schema'
 import { appTheme } from '../../../styles'
@@ -26,21 +27,23 @@ const mockItems = [
 ]
 
 const SettingsScreen = observer(() => {
-  const { settingsStore } = useAppStore()
+  const { settings } = useAppStore()
+
+  const items = settings.events.map((e) => ({ value: e.name, label: e.name }))
 
   const form = useFormik({
     initialValues: {
-      deviceName: settingsStore.deviceName,
-      event: settingsStore.event || mockItems[0].value,
-      url: settingsStore.url,
-      checkState: settingsStore.checkState,
-      cameraType: settingsStore.cameraType,
+      deviceName: settings.deviceName,
+      event: settings.event || settings.events[0].name,
+      url: settings.url,
+      checkState: settings.checkState,
+      cameraType: settings.cameraType,
     },
     validationSchema: settingsSchema,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: (values) => {
-      settingsStore.updateSettings(values)
+      settings.updateSettings(values)
       Toast.show({
         type: 'success',
         text1: 'Saved!',
@@ -66,7 +69,7 @@ const SettingsScreen = observer(() => {
           <Input.Select
             label="Event"
             value={form.values.event}
-            items={mockItems}
+            items={items}
             onChangeItem={({ value }) => form.setFieldValue('event', value)}
           />
         </Section>

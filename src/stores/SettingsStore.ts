@@ -1,5 +1,6 @@
-import { action, makeAutoObservable } from 'mobx'
+import { action, makeAutoObservable, runInAction } from 'mobx'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { getEvents } from '../config'
 
 export class SettingsStore {
   cameraType: 'front' | 'back' = 'front'
@@ -7,6 +8,8 @@ export class SettingsStore {
   deviceName: string = ''
   event: string = 'Plenary Session'
   url: string = 'https://letsconnect.store/'
+
+  events: Event[] = []
 
   constructor() {
     makeAutoObservable(this)
@@ -30,6 +33,13 @@ export class SettingsStore {
 
     return true
   }
+
+  async loadEvents() {
+    const res = await getEvents()
+    runInAction(() => {
+      this.events = res.data.scanningAppEvents
+    })
+  }
 }
 
 export enum CheckState {
@@ -43,4 +53,13 @@ export type Settings = {
   deviceName: string
   event: string
   url: string
+}
+
+export type Event = {
+  id: string
+  name: string
+  imageTopMobile: string
+  imageBottomMobile: string
+  imageTopTablet: string
+  imageBottomTablet: string
 }

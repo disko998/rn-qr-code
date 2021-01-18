@@ -9,11 +9,11 @@ import { AppStoreProvider } from './stores/AppStore'
 const App = () => {
   return (
     <AppStoreProvider>
-      <StatusBar barStyle="dark-content" hidden />
       <ThemeProvider theme={appTheme}>
+        <StatusBar barStyle="dark-content" hidden />
         <Router />
+        <Toast ref={(ref) => Toast.setRef(ref)} />
       </ThemeProvider>
-      <Toast ref={(ref) => Toast.setRef(ref)} />
     </AppStoreProvider>
   )
 }
