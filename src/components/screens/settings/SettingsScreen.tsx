@@ -3,7 +3,6 @@ import { CheckBox } from 'react-native-elements'
 import { useFormik } from 'formik'
 import { observer } from 'mobx-react-lite'
 import Toast from 'react-native-toast-message'
-import { Text } from 'react-native'
 
 import { settingsSchema } from './schema'
 import { appTheme } from '../../../styles'
@@ -11,25 +10,28 @@ import { Input } from '../../shared'
 import { FormWrapper, Section, styles, StyledScroll } from './styles'
 import { useAppStore, CheckState } from '../../../stores'
 
-const mockItems = [
-  {
-    label: 'Plenary Session',
-    value: 'Plenary Session',
-  },
-  {
-    label: 'UK',
-    value: 'uk',
-  },
-  {
-    label: 'France',
-    value: 'france',
-  },
-]
+// const mockItems = [
+//   {
+//     label: 'Plenary Session',
+//     value: 'Plenary Session',
+//   },
+//   {
+//     label: 'UK',
+//     value: 'uk',
+//   },
+//   {
+//     label: 'France',
+//     value: 'france',
+//   },
+// ]
 
 const SettingsScreen = observer(() => {
   const { settings } = useAppStore()
 
-  const items = settings.events.map((e) => ({ value: e.name, label: e.name }))
+  const items = React.useMemo(
+    () => settings.events.map((e) => ({ value: e.name, label: e.name })),
+    [settings],
+  )
 
   const form = useFormik({
     initialValues: {
@@ -70,7 +72,7 @@ const SettingsScreen = observer(() => {
             label="Event"
             value={form.values.event}
             items={items}
-            onChangeItem={({ value }) => form.setFieldValue('event', value)}
+            onValueChange={(value) => form.setFieldValue('event', value)}
           />
         </Section>
         <Section>

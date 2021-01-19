@@ -1,6 +1,7 @@
 import React from 'react'
-import { Platform, TextInputProps, TouchableOpacityProps } from 'react-native'
+import { TextInputProps, TouchableOpacityProps } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
+import { Picker } from '@react-native-picker/picker'
 
 import {
   StyledInput,
@@ -37,26 +38,25 @@ Input.Button = ({ label, ...btnProps }: ButtonProps) => {
   )
 }
 
-Input.Select = ({ label, items, value, onChangeItem }: SelectProps) => {
-  console.log(items)
+Input.Select = ({ label, items, value, onValueChange }: SelectProps) => {
   return (
-    <Container
-      style={
-        Platform.OS !== 'android' && {
-          zIndex: 10,
-        }
-      }>
+    <Container>
       {label && <Label>{label}</Label>}
-      <DropDownPicker
-        zIndex={999}
-        items={items}
-        containerStyle={styles.containerStyle}
-        dropDownStyle={{ marginTop: 2 }}
-        itemStyle={styles.itemStyle}
-        defaultValue={value}
-        onChangeItem={onChangeItem}
-        labelStyle={styles.dropdownLabel}
-      />
+      <InputWrapper>
+        <Picker
+          onValueChange={onValueChange}
+          selectedValue={value}
+          style={styles.picker}
+          prompt="Events">
+          {items.map((item) => (
+            <Picker.Item
+              key={item.value}
+              label={item.label}
+              value={item.value}
+            />
+          ))}
+        </Picker>
+      </InputWrapper>
     </Container>
   )
 }
@@ -74,7 +74,7 @@ type SelectProps = {
   label?: string
   items: DropDownItem[]
   value: string
-  onChangeItem: (item: DropDownItem) => void
+  onValueChange: (value) => void
 }
 
 export type DropDownItem = {

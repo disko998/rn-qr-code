@@ -19,6 +19,7 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     color: appTheme.colors.dark,
   },
+  picker: { height: 50, width: '100%' },
 })
 
 export const Container = styled.View`
