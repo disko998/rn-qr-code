@@ -2,7 +2,8 @@ import React from 'react'
 import { CheckBox } from 'react-native-elements'
 import { useFormik } from 'formik'
 import { observer } from 'mobx-react-lite'
-import Toast from 'react-native-toast-message'
+// import Toast from 'react-native-toast-message'
+import Toast from 'react-native-simple-toast'
 
 import { settingsSchema } from './schema'
 import { appTheme } from '../../../styles'
@@ -31,12 +32,8 @@ const SettingsScreen = observer(() => {
     validateOnChange: false,
     onSubmit: (values) => {
       settings.updateSettings(values)
-      Toast.show({
-        type: 'success',
-        text1: 'Saved!',
-        visibilityTime: 1000,
-        position: 'bottom',
-      })
+
+      Toast.show('Changes Saved!', Toast.SHORT, ['UIAlertController'])
     },
   })
 

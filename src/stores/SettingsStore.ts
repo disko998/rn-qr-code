@@ -54,7 +54,6 @@ export class SettingsStore {
 
       runInAction(() => {
         this.events = json.data.scanningAppEvents
-        console.log('fetched', this.events)
       })
 
       AsyncStorage.setItem(
@@ -62,7 +61,7 @@ export class SettingsStore {
         JSON.stringify(json.data.scanningAppEvents),
       )
     } catch (error) {
-      __DEV__ && console.error(error)
+      __DEV__ && console.warn(error.message)
       // fallback to cached data
       const data = await AsyncStorage.getItem('@events')
       if (data) {

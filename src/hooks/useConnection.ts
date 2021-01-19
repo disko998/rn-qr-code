@@ -1,20 +1,20 @@
 import React from 'react'
 import NetInfo from '@react-native-community/netinfo'
+import Toast from 'react-native-simple-toast'
 
 export const useConnection = (onConnection?: () => void): boolean => {
   const [isConnected, setIsConnected] = React.useState(true)
 
   React.useEffect(() => {
-    console.log('****************add listener*************')
     const unsubscribe = NetInfo.addEventListener((state) => {
-      console.log('Connection type', state.type)
-      console.log('Is connected?', state.isConnected)
+      __DEV__ && console.log('Is connected?', state.isConnected)
       setIsConnected(state.isConnected)
 
       if (state.isConnected) {
         onConnection && onConnection()
       } else {
         // on lost connection
+        Toast.show('Connection lost')
       }
     })
 
