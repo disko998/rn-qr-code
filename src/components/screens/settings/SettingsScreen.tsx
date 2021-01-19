@@ -10,21 +10,6 @@ import { Input } from '../../shared'
 import { FormWrapper, Section, styles, StyledScroll } from './styles'
 import { useAppStore, CheckState } from '../../../stores'
 
-// const mockItems = [
-//   {
-//     label: 'Plenary Session',
-//     value: 'Plenary Session',
-//   },
-//   {
-//     label: 'UK',
-//     value: 'uk',
-//   },
-//   {
-//     label: 'France',
-//     value: 'france',
-//   },
-// ]
-
 const SettingsScreen = observer(() => {
   const { settings } = useAppStore()
 

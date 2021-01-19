@@ -1,6 +1,6 @@
 import { action, makeAutoObservable, runInAction } from 'mobx'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { getEvents } from '../config'
+import { queries, URL } from '../config'
 
 export class SettingsStore {
   cameraType: 'front' | 'back' = 'front'
@@ -14,13 +14,19 @@ export class SettingsStore {
   constructor() {
     makeAutoObservable(this)
 
+    this.loadEvents()
+
     AsyncStorage.getItem('@settings').then((data) => {
-      data && this.updateSettings(JSON.parse(data))
+      if (data) {
+        runInAction(() => {
+          this.updateSettings(JSON.parse(data))
+        })
+      }
     })
   }
 
   @action
-  async updateSettings(settings: Settings): Promise<boolean> {
+  async updateSettings(settings: Settings): Promise<void> {
     const { cameraType, checkState, deviceName, event, url } = settings
 
     this.cameraType = cameraType
@@ -30,15 +36,41 @@ export class SettingsStore {
     this.url = url
 
     await AsyncStorage.setItem('@settings', JSON.stringify(settings))
-
-    return true
   }
 
   async loadEvents() {
-    const res = await getEvents()
-    runInAction(() => {
-      this.events = res.data.scanningAppEvents
-    })
+    try {
+      const res = await fetch(URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: queries.events }),
+      })
+
+      if (!res.ok) {
+        throw new Error('Server Error')
+      }
+
+      const json = await res.json()
+
+      runInAction(() => {
+        this.events = json.data.scanningAppEvents
+        console.log('fetched', this.events)
+      })
+
+      AsyncStorage.setItem(
+        '@events',
+        JSON.stringify(json.data.scanningAppEvents),
+      )
+    } catch (error) {
+      __DEV__ && console.error(error)
+      // fallback to cached data
+      const data = await AsyncStorage.getItem('@events')
+      if (data) {
+        runInAction(() => {
+          this.events = JSON.parse(data)
+        })
+      }
+    }
   }
 }
 

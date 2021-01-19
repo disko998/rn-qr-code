@@ -26,15 +26,8 @@ const ScannerScreen = observer(() => {
   const navigation = useNavigation()
   const [showAlert, setShowAlert] = React.useState(false)
 
-  React.useEffect(() => {
-    settings.loadEvents()
-  }, [])
-
   const onSuccess = React.useCallback((e: any) => {
     console.log(e)
-    // Linking.openURL(e.data).catch((err) =>
-    //   console.error('An error occured', err),
-    // )
   }, [])
 
   return (

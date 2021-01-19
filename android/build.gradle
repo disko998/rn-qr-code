@@ -2,11 +2,12 @@
 
 buildscript {
     ext {
-        buildToolsVersion = "29.0.2"
+        buildToolsVersion = "28.0.3"
         minSdkVersion = 16
      	compileSdkVersion = 28 // 29
 		targetSdkVersion = 28 // 29
-		supportLibVersion = '1.0.2'
+		// supportLibVersion = '1.0.2'
+		androidXCore = "1.0.2"
 		mediaCompatVersion = '1.0.1'
 		supportV4Version = '1.0.0'
     }
