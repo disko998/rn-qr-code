@@ -14,15 +14,15 @@ import { useAppStore, CheckState } from '../../../stores'
 const SettingsScreen = observer(() => {
   const { settings } = useAppStore()
 
-  const items = React.useMemo(
-    () => settings.events.map((e) => ({ value: e.name, label: e.name })),
+  const eventItems = React.useMemo(
+    () => settings.events.map((e) => ({ value: e.id, label: e.name })),
     [settings],
   )
 
   const form = useFormik({
     initialValues: {
       deviceName: settings.deviceName,
-      event: settings.event || settings.events[0].name,
+      event: settings.event?.id || settings.events[0].id,
       url: settings.url,
       checkState: settings.checkState,
       cameraType: settings.cameraType,
@@ -31,9 +31,12 @@ const SettingsScreen = observer(() => {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: (values) => {
-      settings.updateSettings(values)
-
-      Toast.show('Changes Saved!', Toast.SHORT, ['UIAlertController'])
+      const event = settings.events.filter((e) => e.id === values.event)[0]
+      settings.updateSettings({
+        ...values,
+        event,
+      })
+      Toast.show('Changes Saved!', Toast.LONG, ['UIAlertController'])
     },
   })
 
@@ -53,7 +56,7 @@ const SettingsScreen = observer(() => {
           <Input.Select
             label="Event"
             value={form.values.event}
-            items={items}
+            items={eventItems}
             onValueChange={(value) => form.setFieldValue('event', value)}
           />
         </Section>

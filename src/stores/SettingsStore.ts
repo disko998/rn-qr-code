@@ -6,7 +6,7 @@ export class SettingsStore {
   cameraType: 'front' | 'back' = 'front'
   checkState: CheckState = CheckState.CHECK_IN
   deviceName: string = ''
-  event: string = 'Plenary Session'
+  event: Event | undefined = undefined
   url: string = 'https://letsconnect.store/'
 
   events: Event[] = []
@@ -82,7 +82,7 @@ export type Settings = {
   cameraType: 'front' | 'back'
   checkState: CheckState
   deviceName: string
-  event: string
+  event: Event | undefined
   url: string
 }
 

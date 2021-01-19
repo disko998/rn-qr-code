@@ -9,10 +9,9 @@ export const Wrapper = styled.View`
   flex: 1;
 `
 
-export const Header = styled.View`
+export const Header = styled.ImageBackground`
   width: 100%;
   min-height: ${BAR_HEIGHT}px;
-  background-color: ${(props) => props.theme.colors.bar};
   display: flex;
   justify-content: space-between;
   align-items: center;

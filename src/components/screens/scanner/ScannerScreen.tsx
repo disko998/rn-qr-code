@@ -20,11 +20,32 @@ import {
   QRImage,
 } from './styles'
 import { useAppStore } from '../../../stores'
+import { isTablet } from 'react-native-device-info'
 
 const ScannerScreen = observer(() => {
   const { settings } = useAppStore()
   const navigation = useNavigation()
   const [showAlert, setShowAlert] = React.useState(false)
+
+  console.log(settings.event)
+
+  const mapImage = React.useMemo(
+    () =>
+      isTablet()
+        ? {
+            bottom: {
+              uri: settings.event ? settings.event.imageBottomTablet : '',
+            },
+            top: { uri: settings.event ? settings.event.imageTopTablet : '' },
+          }
+        : {
+            bottom: {
+              uri: settings.event ? settings.event.imageBottomMobile : '',
+            },
+            top: { uri: settings.event ? settings.event.imageTopMobile : '' },
+          },
+    [settings],
+  )
 
   const onSuccess = React.useCallback((e: any) => {
     console.log(e)
@@ -32,7 +53,7 @@ const ScannerScreen = observer(() => {
 
   return (
     <Wrapper>
-      <Header>
+      <Header source={mapImage.top}>
         <HeaderText>{settings.checkState}</HeaderText>
         <HeaderText>225</HeaderText>
         <MenuButton
@@ -41,12 +62,13 @@ const ScannerScreen = observer(() => {
           <MenuIcon size={ICON_SIZE} name="dots-vertical" />
         </MenuButton>
       </Header>
+
       <QRCodeScanner
         cameraType={settings.cameraType}
         onRead={onSuccess}
         showMarker
         bottomContent={
-          <BottomBarImage source={block_content} resizeMode="cover" />
+          <BottomBarImage source={mapImage.bottom} resizeMode="cover" />
         }
         customMarker={
           <Marker>
