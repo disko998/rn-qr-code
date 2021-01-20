@@ -88,7 +88,13 @@ export type Settings = {
 
 export type Event = {
   id: string
-  name: string
+  name: {
+    en: string
+    fr: string
+    nl: string
+    pl: string
+    it: string
+  }
   imageTopMobile: string
   imageBottomMobile: string
   imageTopTablet: string

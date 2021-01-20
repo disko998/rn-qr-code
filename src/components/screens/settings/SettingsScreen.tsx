@@ -14,7 +14,7 @@ const SettingsScreen = observer(() => {
   const { settings } = useAppStore()
 
   const eventItems = React.useMemo(
-    () => settings.events.map((e) => ({ value: e.id, label: e.name })),
+    () => settings.events.map((e) => ({ value: e.id, label: e.name['en'] })),
     [settings],
   )
 

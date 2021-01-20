@@ -22,7 +22,7 @@ import {
 import { useAppStore } from '../../../stores'
 
 const ScannerScreen = observer(() => {
-  const { settings } = useAppStore()
+  const { settings, users } = useAppStore()
   const navigation = useNavigation()
   const [showAlert, setShowAlert] = React.useState(false)
 
@@ -41,7 +41,7 @@ const ScannerScreen = observer(() => {
             },
             top: { uri: settings.event ? settings.event.imageTopMobile : '' },
           },
-    [settings],
+    [settings.event],
   )
 
   const onSuccess = React.useCallback((e: any) => {
@@ -52,7 +52,7 @@ const ScannerScreen = observer(() => {
     <Wrapper>
       <Header source={mapImage.top}>
         <HeaderText>{settings.checkState}</HeaderText>
-        <HeaderText>225</HeaderText>
+        <HeaderText>{users.users.length}</HeaderText>
         <MenuButton
           hitSlop={DEFAULT_HIT_SLOP}
           onPress={() => navigation.navigate(Routes.SETTINGS)}>
