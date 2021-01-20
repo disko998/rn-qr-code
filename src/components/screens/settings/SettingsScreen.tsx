@@ -9,19 +9,27 @@ import { appTheme } from '../../../styles'
 import { Input } from '../../shared'
 import { FormWrapper, Section, styles, StyledScroll } from './styles'
 import { useAppStore, CheckState } from '../../../stores'
+import { useNavigation } from '@react-navigation/native'
 
 const SettingsScreen = observer(() => {
+  const navigation = useNavigation()
   const { settings } = useAppStore()
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Settings',
+    })
+  }, [navigation])
 
   const eventItems = React.useMemo(
     () => settings.events.map((e) => ({ value: e.id, label: e.name['en'] })),
-    [settings],
+    [settings.events],
   )
 
   const form = useFormik({
     initialValues: {
       deviceName: settings.deviceName,
-      event: settings.event?.id || settings.events[0].id,
+      event: settings.event?.id || '',
       url: settings.url,
       checkState: settings.checkState,
       cameraType: settings.cameraType,
@@ -35,6 +43,7 @@ const SettingsScreen = observer(() => {
         ...values,
         event,
       })
+
       Toast.show('Changes Saved!', Toast.LONG, ['UIAlertController'])
     },
   })

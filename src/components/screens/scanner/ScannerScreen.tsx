@@ -59,7 +59,6 @@ const ScannerScreen = observer(() => {
           <MenuIcon size={ICON_SIZE} name="dots-vertical" />
         </MenuButton>
       </Header>
-
       <QRCodeScanner
         cameraType={settings.cameraType}
         onRead={onSuccess}

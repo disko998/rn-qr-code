@@ -10,16 +10,15 @@ export class SettingsStore {
   url: string = 'https://letsconnect.store/'
 
   events: Event[] = []
+  initSettings: boolean = false
 
   constructor() {
     makeAutoObservable(this)
 
     AsyncStorage.getItem('@settings').then((data) => {
-      if (data) {
-        runInAction(() => {
-          this.updateSettings(JSON.parse(data))
-        })
-      }
+      runInAction(() => {
+        this.updateSettings(data ? JSON.parse(data) : null)
+      })
     })
 
     AsyncStorage.getItem('@events').then((data) => {
@@ -32,16 +31,21 @@ export class SettingsStore {
   }
 
   @action
-  async updateSettings(settings: Settings): Promise<void> {
-    const { cameraType, checkState, deviceName, event, url } = settings
+  async updateSettings(settings: Settings | null): Promise<void> {
+    if (settings) {
+      const { cameraType, checkState, deviceName, event, url } = settings
 
-    this.cameraType = cameraType
-    this.checkState = checkState
-    this.deviceName = deviceName
-    this.event = event
-    this.url = url
+      this.cameraType = cameraType
+      this.checkState = checkState
+      this.deviceName = deviceName
+      this.event = event
+      this.url = url
+      this.initSettings = false
 
-    await AsyncStorage.setItem('@settings', JSON.stringify(settings))
+      AsyncStorage.setItem('@settings', JSON.stringify(settings))
+    } else {
+      this.initSettings = true
+    }
   }
 
   async loadEvents() {

@@ -7,6 +7,14 @@ export class UsersStore {
 
   constructor() {
     makeAutoObservable(this)
+
+    AsyncStorage.getItem('@users').then((data) => {
+      if (data) {
+        runInAction(() => {
+          this.users = JSON.parse(data)
+        })
+      }
+    })
   }
 
   async loadUsers(project: string) {
