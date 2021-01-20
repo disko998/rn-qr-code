@@ -14,12 +14,18 @@ export class SettingsStore {
   constructor() {
     makeAutoObservable(this)
 
-    this.loadEvents()
-
     AsyncStorage.getItem('@settings').then((data) => {
       if (data) {
         runInAction(() => {
           this.updateSettings(JSON.parse(data))
+        })
+      }
+    })
+
+    AsyncStorage.getItem('@events').then((data) => {
+      if (data) {
+        runInAction(() => {
+          this.events = JSON.parse(data)
         })
       }
     })
@@ -63,12 +69,6 @@ export class SettingsStore {
     } catch (error) {
       __DEV__ && console.warn(error.message)
       // fallback to cached data
-      const data = await AsyncStorage.getItem('@events')
-      if (data) {
-        runInAction(() => {
-          this.events = JSON.parse(data)
-        })
-      }
     }
   }
 }

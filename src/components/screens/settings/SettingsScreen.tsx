@@ -2,7 +2,6 @@ import React from 'react'
 import { CheckBox } from 'react-native-elements'
 import { useFormik } from 'formik'
 import { observer } from 'mobx-react-lite'
-// import Toast from 'react-native-toast-message'
 import Toast from 'react-native-simple-toast'
 
 import { settingsSchema } from './schema'

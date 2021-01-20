@@ -11,7 +11,7 @@ export const useConnection = (onConnection?: () => void): boolean => {
       setIsConnected(state.isConnected)
 
       if (state.isConnected) {
-        onConnection && onConnection()
+        onConnection?.()
       } else {
         // on lost connection
         Toast.show('Connection lost')

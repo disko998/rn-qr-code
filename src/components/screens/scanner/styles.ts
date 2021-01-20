@@ -2,7 +2,7 @@ import styled from 'styled-components/native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { isTablet } from 'react-native-device-info'
 
-export const ICON_SIZE = isTablet() ? 40 : 35
+export const ICON_SIZE = isTablet() ? 45 : 35
 const BAR_HEIGHT = isTablet() ? 80 : 60
 
 export const Wrapper = styled.View`

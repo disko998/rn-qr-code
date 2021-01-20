@@ -1,12 +1,12 @@
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import QRCodeScanner from 'react-native-qrcode-scanner'
-// import Orientation from 'react-native-orientation'
 import { observer } from 'mobx-react-lite'
+import { isTablet } from 'react-native-device-info'
 
 import { Alert } from '../../shared'
 import { Routes } from '../../../config'
-import { block_content, qrcode } from '../../../assets/images'
+import { qrcode } from '../../../assets/images'
 import { DEFAULT_HIT_SLOP } from '../../../styles'
 import {
   Wrapper,
@@ -20,14 +20,11 @@ import {
   QRImage,
 } from './styles'
 import { useAppStore } from '../../../stores'
-import { isTablet } from 'react-native-device-info'
 
 const ScannerScreen = observer(() => {
   const { settings } = useAppStore()
   const navigation = useNavigation()
   const [showAlert, setShowAlert] = React.useState(false)
-
-  console.log(settings.event)
 
   const mapImage = React.useMemo(
     () =>
