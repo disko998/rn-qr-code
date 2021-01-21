@@ -8,8 +8,8 @@ type AppStoreContextValue = {
   users: UsersStore
 }
 
-const settings = new SettingsStore()
-const users = new UsersStore()
+export const settings = new SettingsStore()
+export const users = new UsersStore()
 
 const AppStoreContext = React.createContext<AppStoreContextValue>(
   {} as AppStoreContextValue,

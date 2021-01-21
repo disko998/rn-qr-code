@@ -1,6 +1,7 @@
 import { action, makeAutoObservable, runInAction } from 'mobx'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { queries, URL } from '../config'
+import { queries, query } from '../config'
+import { users } from './AppStore'
 
 export class SettingsStore {
   cameraType: 'front' | 'back' = 'front'
@@ -43,6 +44,8 @@ export class SettingsStore {
       this.initSettings = false
 
       AsyncStorage.setItem('@settings', JSON.stringify(settings))
+
+      users.loadUsers()
     } else {
       this.initSettings = true
     }
@@ -50,36 +53,25 @@ export class SettingsStore {
 
   async loadEvents() {
     try {
-      const res = await fetch(URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: queries.events }),
-      })
-
-      if (!res.ok) {
-        throw new Error('Server Error')
-      }
-
-      const json = await res.json()
+      const res = await query(queries.events)
 
       runInAction(() => {
-        this.events = json.data.scanningAppEvents
+        this.events = res.data.scanningAppEvents
       })
 
       AsyncStorage.setItem(
         '@events',
-        JSON.stringify(json.data.scanningAppEvents),
+        JSON.stringify(res.data.scanningAppEvents),
       )
     } catch (error) {
-      __DEV__ && console.warn(error.message)
-      // fallback to cached data
+      __DEV__ && console.error(error)
     }
   }
 }
 
 export enum CheckState {
-  CHECK_IN = 'Check in',
-  CHECK_OUT = 'Check out',
+  CHECK_IN = 'IN',
+  CHECK_OUT = 'OUT',
 }
 
 export type Settings = {

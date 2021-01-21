@@ -27,6 +27,7 @@ export const HeaderText = styled.Text`
   font-weight: bold;
   font-size: ${isTablet() ? 30 : 24}px;
   color: ${(props) => props.theme.colors.light};
+  text-transform: capitalize;
 `
 
 export const AbsoluteCenter = styled.View`

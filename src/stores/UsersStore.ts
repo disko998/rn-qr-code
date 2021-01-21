@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { queries, URL } from '../config'
+import { queries, query } from '../config'
+import { settings } from './AppStore'
 
 export class UsersStore {
   users: any[] = []
@@ -17,26 +18,48 @@ export class UsersStore {
     })
   }
 
-  async loadUsers(project: string) {
+  async loadUsers() {
     try {
-      const res = await fetch(URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: queries.users, variables: { project } }),
-      })
+      __DEV__ && console.log('fetching...', settings.event?.id)
+      const project = settings.event?.id
 
-      if (!res.ok) {
-        throw new Error('Server Error')
+      if (project) {
+        const res = await query(queries.users, { project })
+
+        const users = res.data.scanningAppUsers
+
+        runInAction(() => {
+          this.users = users
+        })
+
+        AsyncStorage.setItem('@users', JSON.stringify(users))
       }
+    } catch (error) {
+      __DEV__ && console.warn(error.message)
+    }
+  }
 
-      const json = await res.json()
-      const users = json.data.scanningAppUsers
+  async scanUser(registrationId: string) {
+    try {
+      const input = {
+        project: settings.event?.id,
+        userId: '9a2b7294-832e-4793-ba64-50be43093d2b',
+        date: new Date(),
+        inOut: settings.checkState,
+        device: settings.deviceName,
+        reference: null,
+      }
+      console.log('registrationId', input)
 
-      runInAction(() => {
-        this.users = users
-      })
+      //   const res = await query(queries.scanUser, { input })
 
-      AsyncStorage.setItem('@users', JSON.stringify(users))
+      //   console.log(res)
+
+      //   runInAction(() => {
+      //     this.users = users
+      //   })
+
+      //   AsyncStorage.setItem('@users', JSON.stringify(users))
     } catch (error) {
       __DEV__ && console.warn(error.message)
     }

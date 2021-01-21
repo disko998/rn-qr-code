@@ -1,17 +1,22 @@
 import React from 'react'
 import { StatusBar } from 'react-native'
+import { observer } from 'mobx-react-lite'
 
 import Router from './components/Router'
 import { ThemeProvider, appTheme } from './styles/theme'
 import { useAppStore } from './stores/AppStore'
 import { useConnection } from './hooks'
+import { PULL_INTERVAL } from './config'
 
-const App = () => {
+const App = observer(() => {
   const { settings, users } = useAppStore()
   useConnection(() => {
     settings.loadEvents()
-    users.loadUsers('a977890a-956f-4262-a38e-cc2017dce28f')
   })
+
+  React.useEffect(() => {
+    // setInterval(() => users.loadUsers(), PULL_INTERVAL)
+  }, [users])
 
   return (
     <>
@@ -21,6 +26,6 @@ const App = () => {
       </ThemeProvider>
     </>
   )
-}
+})
 
 export default App

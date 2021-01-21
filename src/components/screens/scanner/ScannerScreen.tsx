@@ -64,15 +64,20 @@ const ScannerScreen = observer(() => {
     return () => Orientation.removeOrientationListener(orientationDidChange)
   }, [orientationDidChange])
 
-  const onSuccess = React.useCallback((e: any) => {
-    setShowAlert(true)
-    //   setTimeout(() => (scanner as any).reactivate(), 3000)
+  const onRead = React.useCallback((e: any) => {
+    __DEV__ && console.log(e)
+
+    if (e.type === 'QR_CODE') {
+      setShowAlert(true)
+      // setTimeout(() => (scanner as any).reactivate(), 3000)
+      users.scanUser(e.data)
+    }
   }, [])
 
   return (
     <Wrapper>
       <Header source={{ uri: mapImage.top }}>
-        <HeaderText>{settings.checkState}</HeaderText>
+        <HeaderText>Check {settings.checkState}</HeaderText>
         <AbsoluteCenter>
           <HeaderText>{users.users.length}</HeaderText>
         </AbsoluteCenter>
@@ -83,13 +88,13 @@ const ScannerScreen = observer(() => {
         </MenuButton>
       </Header>
       <QRCodeScanner
-        reactivate={true}
+        reactivate={false}
         reactivateTimeout={3000}
         ref={(node: any) => setScanner(node)}
         containerStyle={styles.camera}
         cameraStyle={styles.camera}
         cameraType={settings.cameraType}
-        onRead={onSuccess}
+        onRead={onRead}
         showMarker
         customMarker={
           <Marker>
