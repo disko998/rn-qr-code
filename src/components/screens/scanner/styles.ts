@@ -23,11 +23,20 @@ export const Header = styled.ImageBackground`
   z-index: 10;
 `
 
-export const HeaderText = styled.Text<{ translate?: boolean }>`
+export const HeaderText = styled.Text`
   font-weight: bold;
   font-size: ${isTablet() ? 30 : 24}px;
   color: ${(props) => props.theme.colors.light};
-  ${(props) => (props.translate ? 'transform: translateX(-10px)' : '')};
+`
+
+export const AbsoluteCenter = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
 `
 
 export const BottomBarImage = styled.ImageBackground`
