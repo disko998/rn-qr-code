@@ -17,6 +17,7 @@
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
     "formik": "^2.2.6",
+    "lodash": "^4.17.20",
     "mobx": "^6.0.4",
     "mobx-react-lite": "^3.1.6",
     "react": "16.13.1",

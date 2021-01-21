@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { Overlay } from 'react-native-elements'
 
@@ -14,69 +15,71 @@ import {
   ErrorText,
 } from './styles'
 
-export default function Alert({
-  isVisible,
-  toggleOverlay,
-  type,
-  title,
-  message,
-  fulName,
-  onNoPress,
-  onYesPress,
-}: AlertProps) {
-  if (type === 'error') {
+const Alert = observer(
+  ({
+    isVisible,
+    onDismiss,
+    type,
+    title,
+    message,
+    fullName,
+    onNoPress,
+    onYesPress,
+  }: AlertProps) => {
+    if (type === 'error') {
+      return (
+        <Overlay
+          animationType="fade"
+          isVisible={isVisible}
+          onBackdropPress={onDismiss}
+          backdropStyle={styles.backdropStyle}
+          overlayStyle={styles.overlayErrorStyle}>
+          <ErrorText>Code not recognized</ErrorText>
+        </Overlay>
+      )
+    }
+
     return (
       <Overlay
         animationType="fade"
         isVisible={isVisible}
-        onBackdropPress={toggleOverlay}
+        onBackdropPress={onDismiss}
         backdropStyle={styles.backdropStyle}
-        overlayStyle={styles.overlayErrorStyle}>
-        <ErrorText>Code not recognized</ErrorText>
+        overlayStyle={styles.overlayStyle}>
+        <>
+          <AlertHeader bg={TypeMap[type]}>
+            <AlertTitle>{title}</AlertTitle>
+          </AlertHeader>
+          <AlertBody contentContainerStyle={styles.scrollContainer}>
+            {type === 'warn' && (
+              <AlertActionWrapper>
+                <AlertText>Check in this attendee anyway?</AlertText>
+                <ButtonsContainer>
+                  <AlertButton onPress={onNoPress}>
+                    <AlertText>NO</AlertText>
+                  </AlertButton>
+                  <AlertButton onPress={onYesPress}>
+                    <AlertText>YES</AlertText>
+                  </AlertButton>
+                </ButtonsContainer>
+              </AlertActionWrapper>
+            )}
+
+            <AlertText>{fullName}</AlertText>
+            <AlertText>{message}</AlertText>
+          </AlertBody>
+        </>
       </Overlay>
     )
-  }
+  },
+)
 
-  return (
-    <Overlay
-      animationType="fade"
-      isVisible={isVisible}
-      onBackdropPress={toggleOverlay}
-      backdropStyle={styles.backdropStyle}
-      overlayStyle={styles.overlayStyle}>
-      <>
-        <AlertHeader bg={TypeMap[type]}>
-          <AlertTitle>{title}</AlertTitle>
-        </AlertHeader>
-        <AlertBody contentContainerStyle={styles.scrollContainer}>
-          {type === 'warn' && (
-            <AlertActionWrapper>
-              <AlertText>Check in this attendee anyway?</AlertText>
-              <ButtonsContainer>
-                <AlertButton onPress={onNoPress}>
-                  <AlertText>NO</AlertText>
-                </AlertButton>
-                <AlertButton onPress={onYesPress}>
-                  <AlertText>YES</AlertText>
-                </AlertButton>
-              </ButtonsContainer>
-            </AlertActionWrapper>
-          )}
-
-          <AlertText>{fulName}</AlertText>
-          <AlertText>{message}</AlertText>
-        </AlertBody>
-      </>
-    </Overlay>
-  )
-}
-
-type AlertProps = {
+export type AlertProps = {
   isVisible: boolean
-  toggleOverlay?: () => void
+  onDismiss?: () => void
   type: AlertType
   title: string
-  fulName?: string
+  fullName?: string
   message?: string
   onYesPress?: () => void
   onNoPress?: () => void
@@ -90,3 +93,5 @@ export const TypeMap = {
   error: appTheme.colors.danger,
   info: appTheme.colors.secondary,
 }
+
+export default Alert

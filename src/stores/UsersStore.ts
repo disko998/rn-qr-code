@@ -1,10 +1,22 @@
-import { makeAutoObservable, runInAction } from 'mobx'
+import { action, makeAutoObservable, runInAction } from 'mobx'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import _ from 'lodash'
+
 import { queries, query } from '../config'
 import { settings } from './AppStore'
+import { CheckState } from './SettingsStore'
+import { AlertType, AlertProps } from '../components/shared/Alert/Alert'
+
+const defaultAlertState: AlertProps = {
+  title: '',
+  message: '',
+  isVisible: false,
+  type: 'success',
+}
 
 export class UsersStore {
-  users: any[] = []
+  users: User[] = []
+  alertState: AlertProps = defaultAlertState
 
   constructor() {
     makeAutoObservable(this)
@@ -39,17 +51,33 @@ export class UsersStore {
     }
   }
 
-  async scanUser(registrationId: string) {
+  async validateScan(registrationId: string) {
     try {
-      const input = {
+      const user = _.find(
+        this.users,
+        (o) => o.badge.registrationId === registrationId,
+      )
+
+      if (!user) {
+        return this.showAlert('error', 'Code not recognized')
+      }
+
+      const input: Input = {
         project: settings.event?.id,
-        userId: '9a2b7294-832e-4793-ba64-50be43093d2b',
+        userId: user.id,
         date: new Date(),
         inOut: settings.checkState,
         device: settings.deviceName,
         reference: null,
       }
-      console.log('registrationId', input)
+
+      __DEV__ && console.log(registrationId, input)
+
+      this.showAlert(
+        'success',
+        `Welcome ${user.name}`,
+        "Market Franchising - ﻿Brasserie de l'abbaye du Val-dieu",
+      )
 
       //   const res = await query(queries.scanUser, { input })
 
@@ -61,7 +89,52 @@ export class UsersStore {
 
       //   AsyncStorage.setItem('@users', JSON.stringify(users))
     } catch (error) {
-      __DEV__ && console.warn(error.message)
+      __DEV__ && console.error(error.message)
     }
   }
+
+  @action
+  showAlert(type: AlertType, title: string, message?: string) {
+    this.alertState = {
+      isVisible: true,
+      type,
+      title,
+      message,
+    }
+  }
+
+  @action
+  dismissAlert() {
+    this.alertState = defaultAlertState
+  }
+}
+
+type User = {
+  id: string
+  language: string
+  name: string
+  profileName: string
+  companyName: string
+  badge: Badge
+}
+
+type Badge = {
+  project: string
+  registrationId: string
+  days: string[]
+  sideEvents: null | SideEvent[]
+}
+
+type SideEvent = {
+  reference: string
+  date: string
+}
+
+type Input = {
+  project: string | undefined
+  userId: string
+  date: Date
+  inOut: CheckState
+  device: string
+  reference: null
 }

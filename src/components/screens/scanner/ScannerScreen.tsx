@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { isTablet } from 'react-native-device-info'
 import Orientation from 'react-native-orientation'
 
+import { useAppStore } from '../../../stores'
 import { Alert as Notification } from '../../shared'
 import { Routes } from '../../../config'
 import { qrcode } from '../../../assets/images'
@@ -21,13 +22,10 @@ import {
   QRImage,
   AbsoluteCenter,
 } from './styles'
-import { useAppStore } from '../../../stores'
 
 const ScannerScreen = observer(() => {
   const { settings, users } = useAppStore()
   const navigation = useNavigation()
-  const [showAlert, setShowAlert] = React.useState(false)
-  const [scanner, setScanner] = React.useState(React.createRef())
   const [screenOrientation, setScreenOrientation] = React.useState(
     Orientation.getInitialOrientation(),
   )
@@ -68,9 +66,7 @@ const ScannerScreen = observer(() => {
     __DEV__ && console.log(e)
 
     if (e.type === 'QR_CODE') {
-      setShowAlert(true)
-      // setTimeout(() => (scanner as any).reactivate(), 3000)
-      users.scanUser(e.data)
+      users.validateScan(e.data)
     }
   }, [])
 
@@ -90,7 +86,7 @@ const ScannerScreen = observer(() => {
       <QRCodeScanner
         reactivate={false}
         reactivateTimeout={3000}
-        ref={(node: any) => setScanner(node)}
+        // ref={(node: any) => setScanner(node)}
         containerStyle={styles.camera}
         cameraStyle={styles.camera}
         cameraType={settings.cameraType}
@@ -106,14 +102,14 @@ const ScannerScreen = observer(() => {
       <BottomBarImage source={{ uri: mapImage.bottom }} resizeMode="cover" />
 
       <Notification
-        title="Welcome Alexander"
-        message="Market Franchising - ﻿Brasserie de l'abbaye du Val-dieu"
-        fulName="Alexander Vansteelant"
-        type="success"
-        isVisible={showAlert}
-        toggleOverlay={() => setShowAlert((prev) => !prev)}
-        onNoPress={() => setShowAlert(false)}
-        onYesPress={() => setShowAlert(false)}
+        title={users.alertState.title}
+        message={users.alertState.message}
+        fullName="Alexander Vansteelant"
+        type={users.alertState.type}
+        isVisible={users.alertState.isVisible}
+        onDismiss={users.dismissAlert}
+        onNoPress={users.dismissAlert}
+        onYesPress={users.dismissAlert}
       />
     </Wrapper>
   )

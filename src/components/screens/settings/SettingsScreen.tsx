@@ -79,7 +79,7 @@ const SettingsScreen = observer(() => {
         </Section>
         <Section>
           <CheckBox
-            title="Check IN"
+            title={`Check ${CheckState.CHECK_IN}`}
             checked={form.values.checkState === CheckState.CHECK_IN}
             onPress={() =>
               form.setFieldValue('checkState', CheckState.CHECK_IN)
@@ -89,7 +89,7 @@ const SettingsScreen = observer(() => {
             checkedColor={appTheme.colors.success}
           />
           <CheckBox
-            title="Check OUT"
+            title={`Check ${CheckState.CHECK_OUT}`}
             checked={form.values.checkState === CheckState.CHECK_OUT}
             onPress={() =>
               form.setFieldValue('checkState', CheckState.CHECK_OUT)
