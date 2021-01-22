@@ -24,7 +24,7 @@ import {
 } from './styles'
 
 const ScannerScreen = observer(() => {
-  const { settings, users } = useAppStore()
+  const { settings, users, notification } = useAppStore()
   const navigation = useNavigation()
   const [screenOrientation, setScreenOrientation] = React.useState(
     Orientation.getInitialOrientation(),
@@ -70,6 +70,10 @@ const ScannerScreen = observer(() => {
     }
   }, [])
 
+  React.useEffect(() => {
+    users.validateScan('EAW7ZUQ')
+  }, [users])
+
   return (
     <Wrapper>
       <Header source={{ uri: mapImage.top }}>
@@ -84,9 +88,8 @@ const ScannerScreen = observer(() => {
         </MenuButton>
       </Header>
       <QRCodeScanner
-        reactivate={false}
+        reactivate={true}
         reactivateTimeout={3000}
-        // ref={(node: any) => setScanner(node)}
         containerStyle={styles.camera}
         cameraStyle={styles.camera}
         cameraType={settings.cameraType}
@@ -102,14 +105,14 @@ const ScannerScreen = observer(() => {
       <BottomBarImage source={{ uri: mapImage.bottom }} resizeMode="cover" />
 
       <Notification
-        title={users.alertState.title}
-        message={users.alertState.message}
-        fullName="Alexander Vansteelant"
-        type={users.alertState.type}
-        isVisible={users.alertState.isVisible}
-        onDismiss={users.dismissAlert}
-        onNoPress={users.dismissAlert}
-        onYesPress={users.dismissAlert}
+        title={notification.title}
+        message={notification.message}
+        fullName={notification.fullName}
+        type={notification.type}
+        isVisible={notification}
+        onDismiss={notification.dismiss}
+        onNoPress={notification.dismiss}
+        onYesPress={notification.dismiss}
       />
     </Wrapper>
   )

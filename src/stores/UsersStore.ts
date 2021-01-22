@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import _ from 'lodash'
 
 import { queries, query } from '../config'
-import { settings } from './AppStore'
+import { notification, settings } from './AppStore'
 import { CheckState } from './SettingsStore'
 import { AlertType, AlertProps } from '../components/shared/Alert/Alert'
 
@@ -16,7 +16,6 @@ const defaultAlertState: AlertProps = {
 
 export class UsersStore {
   users: User[] = []
-  alertState: AlertProps = defaultAlertState
 
   constructor() {
     makeAutoObservable(this)
@@ -52,40 +51,39 @@ export class UsersStore {
   }
 
   async validateScan(registrationId: string) {
+    const user = _.find(
+      this.users,
+      (o) => o.badge.registrationId === registrationId,
+    )
+
+    if (!user) {
+      return notification.show('error', 'Code not recognized')
+    }
+
+    const input: Input = {
+      project: settings.event?.id,
+      userId: user.id,
+      date: new Date(),
+      inOut: settings.checkState,
+      device: settings.deviceName,
+      reference: null,
+    }
+
+    __DEV__ && console.log(registrationId, input)
+
+    notification.show(
+      'success',
+      `Welcome ${user.name}`,
+      `${user.companyName} - ﻿Brasserie de l'abbaye du Val-dieu`,
+      user.profileName,
+    )
+  }
+
+  async consumeTicket(input: Input) {
     try {
-      const user = _.find(
-        this.users,
-        (o) => o.badge.registrationId === registrationId,
-      )
+      const res = await query(queries.scanUser, { input })
 
-      if (!user) {
-        return this.showAlert('error', 'Code not recognized')
-      }
-
-      const input: Input = {
-        project: settings.event?.id,
-        userId: user.id,
-        date: new Date(),
-        inOut: settings.checkState,
-        device: settings.deviceName,
-        reference: null,
-      }
-
-      __DEV__ && console.log(registrationId, input)
-
-      this.showAlert(
-        'success',
-        `Welcome ${user.name}`,
-        "Market Franchising - ﻿Brasserie de l'abbaye du Val-dieu",
-      )
-
-      //   const res = await query(queries.scanUser, { input })
-
-      //   console.log(res)
-
-      //   runInAction(() => {
-      //     this.users = users
-      //   })
+      console.log(res)
 
       //   AsyncStorage.setItem('@users', JSON.stringify(users))
     } catch (error) {
@@ -93,20 +91,20 @@ export class UsersStore {
     }
   }
 
-  @action
-  showAlert(type: AlertType, title: string, message?: string) {
-    this.alertState = {
-      isVisible: true,
-      type,
-      title,
-      message,
-    }
-  }
+  //   @action
+  //   showAlert(type: AlertType, title: string, options?: Partial<AlertProps>) {
+  //     this.alertState = {
+  //       isVisible: true,
+  //       type,
+  //       title,
+  //       ...options,
+  //     }
+  //   }
 
-  @action
-  dismissAlert() {
-    this.alertState = defaultAlertState
-  }
+  //   @action
+  //   dismissAlert() {
+  //     this.alertState = defaultAlertState
+  //   }
 }
 
 type User = {

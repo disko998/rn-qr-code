@@ -47,6 +47,7 @@ Input.Select = ({ label, items, value, onValueChange }: SelectProps) => {
           onValueChange={onValueChange}
           selectedValue={value}
           style={styles.picker}
+          mode="dialog"
           prompt="Events">
           {items.map((item) => (
             <Picker.Item

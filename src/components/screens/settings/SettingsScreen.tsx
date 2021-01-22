@@ -3,6 +3,7 @@ import { CheckBox } from 'react-native-elements'
 import { useFormik } from 'formik'
 import { observer } from 'mobx-react-lite'
 import Toast from 'react-native-simple-toast'
+import _ from 'lodash'
 
 import { settingsSchema } from './schema'
 import { appTheme } from '../../../styles'
@@ -38,7 +39,8 @@ const SettingsScreen = observer(() => {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: (values) => {
-      const event = settings.events.filter((e) => e.id === values.event)[0]
+      const event = _.find(settings.events, { id: values.event })
+      console.log(event)
       settings.updateSettings({
         ...values,
         event,
@@ -48,6 +50,7 @@ const SettingsScreen = observer(() => {
     },
   })
 
+  console.log(form.errors)
   return (
     <FormWrapper>
       <StyledScroll showsVerticalScrollIndicator={false}>

@@ -15,7 +15,7 @@ const App = observer(() => {
   })
 
   React.useEffect(() => {
-    // setInterval(() => users.loadUsers(), PULL_INTERVAL)
+    setInterval(() => users.loadUsers(), PULL_INTERVAL)
   }, [users])
 
   return (
