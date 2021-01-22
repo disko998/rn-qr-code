@@ -24,8 +24,9 @@ import {
 } from './styles'
 
 const ScannerScreen = observer(() => {
-  const { settings, users, notification } = useAppStore()
+  const { settings, users, notification, isConnected } = useAppStore()
   const navigation = useNavigation()
+  const [scanner, setScanner] = React.useState(React.createRef())
   const [screenOrientation, setScreenOrientation] = React.useState(
     Orientation.getInitialOrientation(),
   )
@@ -62,17 +63,16 @@ const ScannerScreen = observer(() => {
     return () => Orientation.removeOrientationListener(orientationDidChange)
   }, [orientationDidChange])
 
-  const onRead = React.useCallback((e: any) => {
-    __DEV__ && console.log(e)
+  const onRead = React.useCallback(
+    (e: any) => {
+      __DEV__ && console.log(e)
 
-    if (e.type === 'QR_CODE') {
-      users.validateScan(e.data)
-    }
-  }, [])
-
-  React.useEffect(() => {
-    users.validateScan('EAW7ZUQ')
-  }, [users])
+      if (e.type === 'QR_CODE') {
+        users.validateScan(e.data, isConnected)
+      }
+    },
+    [isConnected, users],
+  )
 
   return (
     <Wrapper>
@@ -90,6 +90,7 @@ const ScannerScreen = observer(() => {
       <QRCodeScanner
         reactivate={true}
         reactivateTimeout={3000}
+        ref={(node: any) => setScanner(node)}
         containerStyle={styles.camera}
         cameraStyle={styles.camera}
         cameraType={settings.cameraType}
@@ -109,10 +110,10 @@ const ScannerScreen = observer(() => {
         message={notification.message}
         fullName={notification.fullName}
         type={notification.type}
-        isVisible={notification}
-        onDismiss={notification.dismiss}
-        onNoPress={notification.dismiss}
-        onYesPress={notification.dismiss}
+        isVisible={notification.isVisible}
+        onDismiss={() => notification.dismiss()}
+        onNoPress={() => notification.dismiss()}
+        onYesPress={() => notification.dismiss()}
       />
     </Wrapper>
   )

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useConnection } from '../hooks'
 
 import { SettingsStore } from './SettingsStore'
 import { UsersStore } from './UsersStore'
@@ -8,6 +9,7 @@ type AppStoreContextValue = {
   settings: SettingsStore
   users: UsersStore
   notification: NotificationStore
+  isConnected: boolean
 }
 
 export const settings = new SettingsStore()
@@ -21,8 +23,12 @@ const AppStoreContext = React.createContext<AppStoreContextValue>(
 export const AppStoreProvider: React.FC<React.PropsWithChildren<{}>> = ({
   children,
 }) => {
+  const isConnected = useConnection(() => {
+    settings.loadEvents()
+  })
   return (
-    <AppStoreContext.Provider value={{ settings, users, notification }}>
+    <AppStoreContext.Provider
+      value={{ settings, users, notification, isConnected }}>
       {children}
     </AppStoreContext.Provider>
   )

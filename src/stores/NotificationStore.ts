@@ -1,4 +1,4 @@
-import { action, makeAutoObservable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 
 import { AlertType } from '../components/shared/Alert/Alert'
 
@@ -13,7 +13,6 @@ export class NotificationStore {
     makeAutoObservable(this)
   }
 
-  @action
   show(type: AlertType, title: string, message = '', fullName = '') {
     this.isVisible = true
     this.type = type
@@ -22,7 +21,6 @@ export class NotificationStore {
     this.fullName = fullName
   }
 
-  @action
   dismiss() {
     this.isVisible = false
   }

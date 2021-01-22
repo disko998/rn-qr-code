@@ -5,14 +5,10 @@ import { observer } from 'mobx-react-lite'
 import Router from './components/Router'
 import { ThemeProvider, appTheme } from './styles/theme'
 import { useAppStore } from './stores/AppStore'
-import { useConnection } from './hooks'
 import { PULL_INTERVAL } from './config'
 
 const App = observer(() => {
-  const { settings, users } = useAppStore()
-  useConnection(() => {
-    settings.loadEvents()
-  })
+  const { users } = useAppStore()
 
   React.useEffect(() => {
     setInterval(() => users.loadUsers(), PULL_INTERVAL)

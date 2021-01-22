@@ -1,21 +1,14 @@
-import { action, makeAutoObservable, runInAction } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import _ from 'lodash'
 
 import { queries, query } from '../config'
 import { notification, settings } from './AppStore'
 import { CheckState } from './SettingsStore'
-import { AlertType, AlertProps } from '../components/shared/Alert/Alert'
-
-const defaultAlertState: AlertProps = {
-  title: '',
-  message: '',
-  isVisible: false,
-  type: 'success',
-}
 
 export class UsersStore {
   users: User[] = []
+  pendingInputs: Input[] = []
 
   constructor() {
     makeAutoObservable(this)
@@ -24,6 +17,14 @@ export class UsersStore {
       if (data) {
         runInAction(() => {
           this.users = JSON.parse(data)
+        })
+      }
+    })
+
+    AsyncStorage.getItem('@pending').then((data) => {
+      if (data) {
+        runInAction(() => {
+          this.pendingInputs = JSON.parse(data)
         })
       }
     })
@@ -50,7 +51,7 @@ export class UsersStore {
     }
   }
 
-  async validateScan(registrationId: string) {
+  async validateScan(registrationId: string, isConnected: boolean) {
     const user = _.find(
       this.users,
       (o) => o.badge.registrationId === registrationId,
@@ -71,40 +72,56 @@ export class UsersStore {
 
     __DEV__ && console.log(registrationId, input)
 
-    notification.show(
-      'success',
-      `Welcome ${user.name}`,
-      `${user.companyName} - ﻿Brasserie de l'abbaye du Val-dieu`,
-      user.profileName,
-    )
-  }
+    if (isConnected) {
+      try {
+        const res = await this.consumeInput(input)
 
-  async consumeTicket(input: Input) {
-    try {
-      const res = await query(queries.scanUser, { input })
+        notification.show(
+          input.inOut === CheckState.CHECK_IN ? 'success' : 'info',
+          `${input.inOut === CheckState.CHECK_IN ? 'Welcome' : 'Goodbye'} ${
+            user.name
+          }`,
+          `${user.companyName} - ﻿Brasserie de l'abbaye du Val-dieu`,
+          user.profileName,
+        )
 
-      console.log(res)
+        console.log('Success', res)
+      } catch (error) {
+        return notification.show('error', 'Code not recognized')
+      }
+    } else {
+      this.pendingInputs.push(input)
+      await AsyncStorage.setItem('@pending', JSON.stringify(this.pendingInputs))
 
-      //   AsyncStorage.setItem('@users', JSON.stringify(users))
-    } catch (error) {
-      __DEV__ && console.error(error.message)
+      notification.show(
+        input.inOut === CheckState.CHECK_IN ? 'success' : 'info',
+        `${input.inOut === CheckState.CHECK_IN ? 'Welcome' : 'Goodbye'} ${
+          user.name
+        }`,
+        `${user.companyName} - ﻿Brasserie de l'abbaye du Val-dieu`,
+        user.profileName,
+      )
     }
   }
 
-  //   @action
-  //   showAlert(type: AlertType, title: string, options?: Partial<AlertProps>) {
-  //     this.alertState = {
-  //       isVisible: true,
-  //       type,
-  //       title,
-  //       ...options,
-  //     }
-  //   }
+  consumePending() {
+    this.pendingInputs.map((input) => {
+      this.consumeInput(input)
+    })
+  }
 
-  //   @action
-  //   dismissAlert() {
-  //     this.alertState = defaultAlertState
-  //   }
+  async consumeInput(input: Input, isPending?: boolean) {
+    const res = await query(queries.scanUser, { input })
+
+    if (isPending) {
+      const filtered = this.pendingInputs.filter(
+        (i) => i.userId !== input.userId,
+      )
+      await AsyncStorage.setItem('@pending', JSON.stringify(filtered))
+    }
+
+    return res
+  }
 }
 
 type User = {
