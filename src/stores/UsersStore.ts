@@ -79,10 +79,10 @@ export class UsersStore {
         notification.show(
           input.inOut === CheckState.CHECK_IN ? 'success' : 'info',
           `${input.inOut === CheckState.CHECK_IN ? 'Welcome' : 'Goodbye'} ${
-            user.name
+            user.name.split(' ')[0]
           }`,
-          `${user.companyName} - ﻿Brasserie de l'abbaye du Val-dieu`,
-          user.profileName,
+          `${user.companyName} - ${user.profileName}`,
+          user.name,
         )
 
         console.log('Success', res)
@@ -106,7 +106,7 @@ export class UsersStore {
 
   consumePending() {
     this.pendingInputs.map((input) => {
-      this.consumeInput(input)
+      this.consumeInput(input, true)
     })
   }
 

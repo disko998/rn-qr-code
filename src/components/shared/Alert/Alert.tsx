@@ -76,7 +76,7 @@ const Alert = observer(
 
 export type AlertProps = {
   isVisible: boolean
-  onDismiss?: () => void
+  onDismiss: () => void
   type: AlertType
   title: string
   fullName?: string
