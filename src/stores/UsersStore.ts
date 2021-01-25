@@ -5,6 +5,7 @@ import _ from 'lodash'
 import { queries, query } from '../config'
 import { notification, settings } from './AppStore'
 import { CheckState } from './SettingsStore'
+import { Notification } from './NotificationStore'
 
 export class UsersStore {
   users: User[] = []
@@ -58,8 +59,7 @@ export class UsersStore {
     )
 
     if (!user) {
-      notification.playSound('error')
-      return notification.show('error', 'Code not recognized')
+      return notification.show(Notification.CODE_NOT_RECOGNIZED)
     }
 
     const input: Input = {
@@ -70,7 +70,6 @@ export class UsersStore {
       device: settings.deviceName,
       reference: null,
     }
-
     __DEV__ && console.log(registrationId, input)
 
     if (isConnected) {
@@ -78,31 +77,21 @@ export class UsersStore {
         const res = await this.consumeInput(input)
 
         notification.show(
-          input.inOut === CheckState.CHECK_IN ? 'success' : 'info',
-          `${input.inOut === CheckState.CHECK_IN ? 'Welcome' : 'Goodbye'} ${
-            user.name.split(' ')[0]
-          }`,
-          `${user.companyName} - ${user.profileName}`,
-          user.name,
+          input.inOut === CheckState.CHECK_IN
+            ? Notification.CHECK_IN
+            : Notification.CHECK_OUT,
+          user,
         )
-        notification.playSound('success')
 
         console.log('Success', res)
       } catch (error) {
-        return notification.show('error', 'Code not recognized')
+        return notification.show(Notification.CODE_NOT_RECOGNIZED)
       }
     } else {
       this.pendingInputs.push(input)
       await AsyncStorage.setItem('@pending', JSON.stringify(this.pendingInputs))
 
-      notification.show(
-        input.inOut === CheckState.CHECK_IN ? 'success' : 'info',
-        `${input.inOut === CheckState.CHECK_IN ? 'Welcome' : 'Goodbye'} ${
-          user.name
-        }`,
-        `${user.companyName} - ﻿Brasserie de l'abbaye du Val-dieu`,
-        user.profileName,
-      )
+      notification.show(Notification.CHECK_IN, user)
     }
   }
 
@@ -126,7 +115,7 @@ export class UsersStore {
   }
 }
 
-type User = {
+export type User = {
   id: string
   language: string
   name: string
@@ -135,19 +124,19 @@ type User = {
   badge: Badge
 }
 
-type Badge = {
+export type Badge = {
   project: string
   registrationId: string
   days: string[]
   sideEvents: null | SideEvent[]
 }
 
-type SideEvent = {
+export type SideEvent = {
   reference: string
   date: string
 }
 
-type Input = {
+export type Input = {
   project: string | undefined
   userId: string
   date: Date

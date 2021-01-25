@@ -1,4 +1,5 @@
 import React from 'react'
+import { StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import QRCodeScanner from 'react-native-qrcode-scanner'
 import { observer } from 'mobx-react-lite'
@@ -7,7 +8,7 @@ import Orientation from 'react-native-orientation'
 
 import { useAppStore } from '../../../stores'
 import { Alert as Notification } from '../../shared'
-import { Routes } from '../../../config'
+import { Routes, SCANNING_DELAY } from '../../../config'
 import { qrcode } from '../../../assets/images'
 import { DEFAULT_HIT_SLOP } from '../../../styles'
 import {
@@ -29,25 +30,6 @@ const ScannerScreen = observer(() => {
   const [scanner, setScanner] = React.useState(React.createRef())
   const [screenOrientation, setScreenOrientation] = React.useState(
     Orientation.getInitialOrientation(),
-  )
-
-  const mapImage = React.useMemo(
-    () =>
-      isTablet()
-        ? {
-            bottom: settings.event ? settings.event.imageBottomTablet : '',
-            top: settings.event ? settings.event.imageTopTablet : '',
-          }
-        : {
-            bottom: settings.event
-              ? screenOrientation === 'LANDSCAPE'
-                ? settings.event.imageBottomTablet
-                : settings.event.imageBottomMobile
-              : '',
-
-            top: settings.event ? settings.event.imageTopMobile : '',
-          },
-    [settings.event, screenOrientation],
   )
 
   const orientationDidChange = React.useCallback(
@@ -74,9 +56,27 @@ const ScannerScreen = observer(() => {
     [isConnected, users],
   )
 
+  const mapImages = React.useMemo(
+    () =>
+      isTablet()
+        ? {
+            bottom: settings.event?.imageBottomTablet,
+            top: settings.event?.imageTopTablet,
+          }
+        : {
+            bottom:
+              screenOrientation === 'LANDSCAPE'
+                ? settings.event?.imageBottomTablet
+                : settings.event?.imageBottomMobile,
+
+            top: settings.event?.imageTopMobile,
+          },
+    [settings.event, screenOrientation],
+  )
+
   return (
     <Wrapper>
-      <Header source={{ uri: mapImage.top }}>
+      <Header source={{ uri: mapImages.top }}>
         <HeaderText>Check {settings.checkState}</HeaderText>
         <AbsoluteCenter>
           <HeaderText>{users.users.length}</HeaderText>
@@ -89,7 +89,7 @@ const ScannerScreen = observer(() => {
       </Header>
       <QRCodeScanner
         reactivate={true}
-        reactivateTimeout={3000}
+        reactivateTimeout={SCANNING_DELAY}
         ref={(node: any) => setScanner(node)}
         containerStyle={styles.camera}
         cameraStyle={styles.camera}
@@ -103,7 +103,7 @@ const ScannerScreen = observer(() => {
         }
       />
 
-      <BottomBarImage source={{ uri: mapImage.bottom }} resizeMode="cover" />
+      <BottomBarImage source={{ uri: mapImages.bottom }} resizeMode="cover" />
 
       <Notification
         title={notification.title}
@@ -119,8 +119,7 @@ const ScannerScreen = observer(() => {
   )
 })
 
-const styles = {
+const styles = StyleSheet.create({
   camera: { width: '100%', height: '100%' },
-}
-
+})
 export default ScannerScreen
