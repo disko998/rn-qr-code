@@ -1,6 +1,6 @@
 import { action, makeAutoObservable, runInAction } from 'mobx'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { queries, query } from '../config'
+import { DEFAULT_URL, queries, query } from '../config'
 import { users } from './AppStore'
 
 export class SettingsStore {
@@ -8,7 +8,7 @@ export class SettingsStore {
   checkState: CheckState = CheckState.CHECK_IN
   deviceName: string = ''
   event: Event | undefined = undefined
-  url: string = 'https://letsconnect.store/'
+  url: string = DEFAULT_URL
 
   events: Event[] = []
   initSettings: boolean = false
@@ -53,7 +53,7 @@ export class SettingsStore {
 
   async loadEvents() {
     try {
-      const res = await query(queries.events)
+      const res = await query(this.url, queries.events)
 
       runInAction(() => {
         this.events = res.data.scanningAppEvents

@@ -37,7 +37,7 @@ export class UsersStore {
       const project = settings.event?.id
 
       if (project) {
-        const res = await query(queries.users, { project })
+        const res = await query(settings.url, queries.users, { project })
 
         const users = res.data.scanningAppUsers
 
@@ -102,7 +102,7 @@ export class UsersStore {
   }
 
   async consumeInput(input: Input, isPending?: boolean) {
-    const res = await query(queries.scanUser, { input })
+    const res = await query(settings.url, queries.scanUser, { input })
 
     if (isPending) {
       const filtered = this.pendingInputs.filter(

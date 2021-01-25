@@ -1,6 +1,8 @@
 import { gql } from '../util/helper'
 
-export const URL = 'https://yourfair-git-s4.madewithyou1.now.sh/graphql'
+export const DEFAULT_URL = __DEV__
+  ? 'https://yourfair-git-s4.madewithyou1.now.sh'
+  : 'https://letsconnect.store'
 
 export const queries = {
   events: gql`
@@ -49,8 +51,8 @@ export const queries = {
   `,
 }
 
-export const query = async (query: string, variables?: any) => {
-  const res = await fetch(URL, {
+export const query = async (URL: string, query: string, variables?: any) => {
+  const res = await fetch(`${URL}/graphql`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query, variables }),

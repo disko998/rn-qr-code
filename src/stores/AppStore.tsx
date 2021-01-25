@@ -26,6 +26,7 @@ export const AppStoreProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const isConnected = useConnection(() => {
     settings.loadEvents()
   })
+
   return (
     <AppStoreContext.Provider
       value={{ settings, users, notification, isConnected }}>

@@ -87,6 +87,7 @@ const ScannerScreen = observer(() => {
           <MenuIcon size={ICON_SIZE} name="dots-vertical" />
         </MenuButton>
       </Header>
+
       <QRCodeScanner
         reactivate={true}
         reactivateTimeout={SCANNING_DELAY}

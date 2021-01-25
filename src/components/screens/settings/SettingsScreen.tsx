@@ -40,7 +40,6 @@ const SettingsScreen = observer(() => {
     validateOnChange: false,
     onSubmit: (values) => {
       const event = _.find(settings.events, { id: values.event })
-      console.log(event)
       settings.updateSettings({
         ...values,
         event,
