@@ -1,8 +1,8 @@
-import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { Overlay } from 'react-native-elements'
 
 import { appTheme } from '../../../styles'
+import { POPUP_DELAY } from '../../../config'
 import {
   styles,
   AlertBody,
@@ -25,6 +25,12 @@ const Alert = ({
   onNoPress,
   onYesPress,
 }: AlertProps) => {
+  React.useEffect(() => {
+    if (isVisible) {
+      setTimeout(() => onDismiss(), POPUP_DELAY)
+    }
+  }, [isVisible, onDismiss])
+
   if (type === 'error') {
     return (
       <Overlay

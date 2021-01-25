@@ -25,6 +25,7 @@ export const AppStoreProvider: React.FC<React.PropsWithChildren<{}>> = ({
 }) => {
   const isConnected = useConnection(() => {
     settings.loadEvents()
+    users.consumePending()
   })
 
   return (
