@@ -58,6 +58,7 @@ export class UsersStore {
     )
 
     if (!user) {
+      notification.playSound('error')
       return notification.show('error', 'Code not recognized')
     }
 
@@ -84,6 +85,7 @@ export class UsersStore {
           `${user.companyName} - ${user.profileName}`,
           user.name,
         )
+        notification.playSound('success')
 
         console.log('Success', res)
       } catch (error) {

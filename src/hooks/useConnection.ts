@@ -8,13 +8,14 @@ export const useConnection = (onConnection?: () => void): boolean => {
   React.useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
       __DEV__ && console.log('Is connected?', state.isConnected)
-      setIsConnected(state.isConnected)
+      setIsConnected(state.isConnected && Boolean(state.isInternetReachable))
 
-      if (state.isConnected) {
+      if (state.isConnected && state.isInternetReachable) {
         onConnection?.()
+        Toast.show('Connection online')
       } else {
         // on lost connection
-        Toast.show('Connection lost')
+        Toast.show('Connection offline')
       }
     })
 
