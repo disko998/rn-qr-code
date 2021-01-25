@@ -4,13 +4,13 @@ import { useFormik } from 'formik'
 import { observer } from 'mobx-react-lite'
 import Toast from 'react-native-simple-toast'
 import _ from 'lodash'
+import { useNavigation } from '@react-navigation/native'
 
 import { settingsSchema } from './schema'
 import { appTheme } from '../../../styles'
 import { Input } from '../../shared'
 import { FormWrapper, Section, styles, StyledScroll } from './styles'
 import { useAppStore, CheckState } from '../../../stores'
-import { useNavigation } from '@react-navigation/native'
 
 const SettingsScreen = observer(() => {
   const navigation = useNavigation()
@@ -50,7 +50,6 @@ const SettingsScreen = observer(() => {
     },
   })
 
-  console.log(form.errors)
   return (
     <FormWrapper>
       <StyledScroll showsVerticalScrollIndicator={false}>

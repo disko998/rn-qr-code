@@ -14,6 +14,7 @@ declare module 'styled-components' {
       bar: string
       gray: string
       black: string
+      darkGray: string
     }
   }
 }

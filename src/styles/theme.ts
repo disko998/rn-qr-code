@@ -13,6 +13,7 @@ export const appTheme: DefaultTheme = {
     danger: '#e61610',
     bar: 'rgba(27, 100, 168, 0.9)',
     gray: '#d6d6d6',
+    darkGray: '#aaaaaa',
   },
 }
 

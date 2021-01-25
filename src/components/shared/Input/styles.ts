@@ -3,6 +3,7 @@ import { isTablet } from 'react-native-device-info'
 import { StyleSheet } from 'react-native'
 
 import { appTheme } from '../../../styles/theme'
+import { WINDOW } from '../../../styles'
 
 const MAX_INPUT_WIDTH = isTablet() ? '500px' : '100%'
 
@@ -20,6 +21,33 @@ export const styles = StyleSheet.create({
     color: appTheme.colors.dark,
   },
   picker: { height: 50, width: '100%' },
+  pickerIcon: {
+    backgroundColor: 'transparent',
+    borderTopWidth: 10,
+    borderTopColor: '#aaaaaa',
+    borderRightWidth: 10,
+    borderRightColor: 'transparent',
+    borderLeftWidth: 10,
+    borderLeftColor: 'transparent',
+    width: 0,
+    height: 0,
+  },
+  inputPicker: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    color: 'black',
+    borderWidth: 0,
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  iconContainer: {
+    top: 12,
+    right: 10,
+  },
+  pickerContainer: {
+    width: WINDOW.width - 30,
+    overflow: 'hidden',
+  },
 })
 
 export const Container = styled.View`

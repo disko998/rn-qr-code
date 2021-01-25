@@ -1,7 +1,7 @@
 import React from 'react'
 import { TextInputProps, TouchableOpacityProps } from 'react-native'
-import DropDownPicker from 'react-native-dropdown-picker'
-import { Picker } from '@react-native-picker/picker'
+import RNPickerSelect from 'react-native-picker-select'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 import {
   StyledInput,
@@ -13,6 +13,7 @@ import {
   HelperText,
   styles,
 } from './styles'
+import { appTheme } from '../../../styles'
 
 export default function Input({
   label,
@@ -43,20 +44,26 @@ Input.Select = ({ label, items, value, onValueChange }: SelectProps) => {
     <Container>
       {label && <Label>{label}</Label>}
       <InputWrapper>
-        <Picker
+        <RNPickerSelect
+          placeholder={{ label: 'Select event' }}
           onValueChange={onValueChange}
-          selectedValue={value}
-          style={styles.picker}
-          mode="dialog"
-          prompt="Events">
-          {items.map((item) => (
-            <Picker.Item
-              key={item.value}
-              label={item.label}
-              value={item.value}
+          items={items}
+          value={value}
+          style={{
+            inputIOS: styles.inputPicker,
+            inputAndroid: styles.inputPicker,
+            inputAndroidContainer: styles.pickerContainer,
+            inputIOSContainer: styles.pickerContainer,
+            iconContainer: styles.iconContainer,
+          }}
+          Icon={() => (
+            <AntDesign
+              size={20}
+              name="caretdown"
+              color={appTheme.colors.darkGray}
             />
-          ))}
-        </Picker>
+          )}
+        />
       </InputWrapper>
     </Container>
   )
@@ -75,7 +82,7 @@ type SelectProps = {
   label?: string
   items: DropDownItem[]
   value: string
-  onValueChange: (value) => void
+  onValueChange: (value: string) => void
 }
 
 export type DropDownItem = {
