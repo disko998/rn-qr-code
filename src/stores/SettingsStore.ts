@@ -31,7 +31,6 @@ export class SettingsStore {
     })
   }
 
-  @action
   async updateSettings(settings: Settings | null): Promise<void> {
     if (settings) {
       const { cameraType, checkState, deviceName, event, url } = settings

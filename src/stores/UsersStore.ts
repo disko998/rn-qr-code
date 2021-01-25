@@ -52,7 +52,7 @@ export class UsersStore {
     }
   }
 
-  async validateScan(registrationId: string, isConnected: boolean) {
+  async scanUserTicket(registrationId: string, isConnected: boolean) {
     const user = _.find(
       this.users,
       (o) => o.badge.registrationId === registrationId,
@@ -72,43 +72,51 @@ export class UsersStore {
     }
     __DEV__ && console.log(registrationId, input)
 
-    if (isConnected) {
-      try {
-        const res = await this.consumeInput(input)
-
-        notification.show(
-          input.inOut === CheckState.CHECK_IN
-            ? Notification.CHECK_IN
-            : Notification.CHECK_OUT,
-          user,
-        )
-
-        console.log('Success', res)
-      } catch (error) {
-        return notification.show(Notification.CODE_NOT_RECOGNIZED)
-      }
-    } else {
+    if (!isConnected) {
       this.pendingInputs.push(input)
       await AsyncStorage.setItem('@pending', JSON.stringify(this.pendingInputs))
 
-      notification.show(Notification.CHECK_IN, user)
+      return notification.show(
+        input.inOut === CheckState.CHECK_IN
+          ? Notification.CHECK_IN
+          : Notification.CHECK_OUT,
+        user,
+      )
+    }
+
+    // validate ticket on backend
+    this.validateTicket(input, user)
+  }
+
+  async validateTicket(input: Input, user: User) {
+    try {
+      const res = await this.consumeTicket(input)
+
+      notification.show(
+        input.inOut === CheckState.CHECK_IN
+          ? Notification.CHECK_IN
+          : Notification.CHECK_OUT,
+        user,
+      )
+    } catch (error) {
+      return notification.show(Notification.CODE_NOT_RECOGNIZED)
     }
   }
 
   consumePending() {
     this.pendingInputs.map((input) => {
-      this.consumeInput(input, true)
+      this.consumeTicket(input, true)
     })
   }
 
-  async consumeInput(input: Input, isPending?: boolean) {
+  async consumeTicket(input: Input, isPending?: boolean) {
     const res = await query(settings.url, queries.scanUser, { input })
 
     if (isPending) {
-      const filtered = this.pendingInputs.filter(
+      this.pendingInputs = this.pendingInputs.filter(
         (i) => i.userId !== input.userId,
       )
-      await AsyncStorage.setItem('@pending', JSON.stringify(filtered))
+      await AsyncStorage.setItem('@pending', JSON.stringify(this.pendingInputs))
     }
 
     return res
