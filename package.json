@@ -1,5 +1,5 @@
 {
-  "name": "scanning",
+  "name": "letsconnectScanning",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "android:apk": "cd android && ./gradlew app:assembleRelease"
+    "android:apk": "cd android && ./gradlew app:assembleRelease",
+    "push:ios": "appcenter codepush release-react -a Lets-Connect/letsconnectScanning -d Production --plist-file ios/letsconnectScanning/Info.plist"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.13.2",
