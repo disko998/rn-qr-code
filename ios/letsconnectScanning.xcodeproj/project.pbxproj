@@ -20,6 +20,8 @@
 		4E4B2E57072FE375B6F551A2 /* libPods-letsconnectScanning-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E6C955DA207302424060293 /* libPods-letsconnectScanning-tvOSTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		87EBC92CB9312F24DD598EC5 /* libPods-letsconnectScanning-letsconnectScanningTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D26BF12D4D2867599015F885 /* libPods-letsconnectScanning-letsconnectScanningTests.a */; };
+		F85F563225C0385C00886554 /* success.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F85F563025C0385C00886554 /* success.mp3 */; };
+		F85F563325C0385C00886554 /* error.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F85F563125C0385C00886554 /* error.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,8 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F4B5191DB080D771C08BCE40 /* Pods-letsconnectScanning.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-letsconnectScanning.debug.xcconfig"; path = "Target Support Files/Pods-letsconnectScanning/Pods-letsconnectScanning.debug.xcconfig"; sourceTree = "<group>"; };
+		F85F563025C0385C00886554 /* success.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = success.mp3; path = ../android/app/src/main/res/raw/success.mp3; sourceTree = "<group>"; };
+		F85F563125C0385C00886554 /* error.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = error.mp3; path = ../android/app/src/main/res/raw/error.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +163,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				F85F563125C0385C00886554 /* error.mp3 */,
+				F85F563025C0385C00886554 /* success.mp3 */,
 				13B07FAE1A68108700A75B9A /* letsconnectScanning */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* letsconnectScanningTests */,
@@ -340,6 +346,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				F85F563325C0385C00886554 /* error.mp3 in Resources */,
+				F85F563225C0385C00886554 /* success.mp3 in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

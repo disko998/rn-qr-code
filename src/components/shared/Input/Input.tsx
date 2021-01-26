@@ -4,6 +4,7 @@ import RNPickerSelect from 'react-native-picker-select'
 import { Picker } from '@react-native-picker/picker'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
+import { appTheme } from '../../../styles'
 import {
   StyledInput,
   Container,
@@ -14,7 +15,6 @@ import {
   HelperText,
   styles,
 } from './styles'
-import { appTheme } from '../../../styles'
 
 export default function Input({
   label,
