@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">letsconnectScanning</string>
+	<string moduleConfig="true" name="CodePushDeploymentKey">aR8DfPcvqqb0cIFaa5B2IJzAW0DkkzVc9Bk5q</string>
 </resources>
