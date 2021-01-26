@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
   pickerIcon: {
     backgroundColor: 'transparent',
     borderTopWidth: 10,
-    borderTopColor: '#aaaaaa',
+    borderTopColor: appTheme.colors.darkGray,
     borderRightWidth: 10,
     borderRightColor: 'transparent',
     borderLeftWidth: 10,
@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     paddingVertical: 12,
     paddingHorizontal: 10,
-    color: 'black',
+    color: appTheme.colors.black,
     borderWidth: 0,
     paddingRight: 30, // to ensure the text is never behind the icon
   },
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     right: 10,
   },
   pickerContainer: {
-    width: WINDOW.width - 30,
+    width: isTablet() ? 500 : WINDOW.width - 30,
     overflow: 'hidden',
   },
 })
