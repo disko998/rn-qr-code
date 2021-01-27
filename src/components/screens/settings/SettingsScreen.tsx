@@ -58,7 +58,7 @@ const SettingsScreen = observer(() => {
       <StyledScroll showsVerticalScrollIndicator={false}>
         <Section>
           <Input
-            label="Device Name"
+            label="Device Name *"
             placeholder="Device"
             value={form.values.deviceName}
             onChangeText={form.handleChange('deviceName')}
@@ -75,7 +75,7 @@ const SettingsScreen = observer(() => {
         </Section>
         <Section>
           <Input
-            label="URL"
+            label="URL *"
             placeholder="https://example.com"
             value={form.values.url}
             onChangeText={form.handleChange('url')}
