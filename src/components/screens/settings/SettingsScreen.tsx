@@ -30,7 +30,11 @@ const SettingsScreen = observer(() => {
   const form = useFormik({
     initialValues: {
       deviceName: settings.deviceName,
-      event: settings.event?.id || settings.events[0].id,
+      event: settings.event
+        ? settings.event.id
+        : settings.events.length
+        ? settings.events[0].id
+        : '',
       url: settings.url,
       checkState: settings.checkState,
       cameraType: settings.cameraType,
