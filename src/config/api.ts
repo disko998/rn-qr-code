@@ -49,6 +49,11 @@ export const queries = {
       }
     }
   `,
+  validateInput: gql`
+    query($input: ScanUserOnEventInput!) {
+      userIsRegisteredForEvent(input: $input)
+    }
+  `,
 }
 
 export const query = async (URL: string, query: string, variables?: any) => {

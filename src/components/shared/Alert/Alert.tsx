@@ -26,10 +26,10 @@ const Alert = ({
   onYesPress,
 }: AlertProps) => {
   React.useEffect(() => {
-    if (isVisible) {
+    if (isVisible && type !== 'warn') {
       setTimeout(() => onDismiss(), POPUP_DELAY)
     }
-  }, [isVisible, onDismiss])
+  }, [isVisible, onDismiss, type])
 
   if (type === 'error') {
     return (
@@ -39,7 +39,7 @@ const Alert = ({
         onBackdropPress={onDismiss}
         backdropStyle={styles.backdropStyle}
         overlayStyle={styles.overlayErrorStyle}>
-        <ErrorText>Code not recognized</ErrorText>
+        <ErrorText>{title}</ErrorText>
       </Overlay>
     )
   }

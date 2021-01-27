@@ -70,6 +70,7 @@ export class UsersStore {
       device: settings.deviceName,
       reference: null,
     }
+
     __DEV__ && console.log(registrationId, input)
 
     if (!isConnected) {
@@ -85,41 +86,48 @@ export class UsersStore {
     }
 
     // validate ticket on backend
-    this.validateTicket(input, user)
-  }
+    const notify = await this.consumeTicket(input)
 
-  async validateTicket(input: Input, user: User) {
-    try {
-      const res = await this.consumeTicket(input)
-
-      notification.show(
-        input.inOut === CheckState.CHECK_IN
-          ? Notification.CHECK_IN
-          : Notification.CHECK_OUT,
-        user,
-      )
-    } catch (error) {
-      return notification.show(Notification.CODE_NOT_RECOGNIZED)
-    }
+    notification.show(notify, user)
   }
 
   consumePending() {
-    this.pendingInputs.map((input) => {
-      this.consumeTicket(input, true)
+    this.pendingInputs.map(async (input) => {
+      const notify = await this.consumeTicket(input, true)
     })
   }
 
-  async consumeTicket(input: Input, isPending?: boolean) {
-    const res = await query(settings.url, queries.scanUser, { input })
+  async consumeTicket(
+    input: Input,
+    isPending?: boolean,
+  ): Promise<Notification> {
+    try {
+      const {
+        data: { userIsRegisteredForEvent },
+      } = await query(settings.url, queries.validateInput, { input })
 
-    if (isPending) {
-      this.pendingInputs = this.pendingInputs.filter(
-        (i) => i.userId !== input.userId,
-      )
-      await AsyncStorage.setItem('@pending', JSON.stringify(this.pendingInputs))
+      if (userIsRegisteredForEvent) {
+        return Notification.NOT_REGISTER
+      }
+
+      const { data } = await query(settings.url, queries.scanUser, { input })
+
+      if (isPending) {
+        this.pendingInputs = this.pendingInputs.filter(
+          (i) => i.userId !== input.userId,
+        )
+        await AsyncStorage.setItem(
+          '@pending',
+          JSON.stringify(this.pendingInputs),
+        )
+      }
+
+      return input.inOut === CheckState.CHECK_IN
+        ? Notification.CHECK_IN
+        : Notification.CHECK_OUT
+    } catch (error) {
+      return Notification.CODE_NOT_RECOGNIZED
     }
-
-    return res
   }
 }
 
