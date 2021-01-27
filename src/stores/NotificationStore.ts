@@ -10,6 +10,10 @@ export class NotificationStore {
   fullName?: string = ''
   isVisible: boolean = false
   type: AlertType = 'success'
+  description?: string = ''
+  onYesPress?: () => void = undefined
+  onNoPress?: () => void = undefined
+  showActions: boolean = false
 
   constructor() {
     makeAutoObservable(this)
@@ -20,23 +24,30 @@ export class NotificationStore {
       case Notification.CHECK_IN:
         this.isVisible = true
         this.type = 'success'
-        this.title = `Welcome ${user?.name.split(' ')[0]}`
+        this.title = `Welcome ${
+          user?.name.split(' ').length ? user?.name.split(' ')[0] : user?.name
+        }`
         this.message = `${user?.companyName} - ${user?.profileName}`
         this.fullName = user?.name
+        this.showActions = false
         this.playSound('success')
         break
       case Notification.CHECK_OUT:
         this.isVisible = true
         this.type = 'info'
-        this.title = `Goodbye ${user?.name.split(' ')[0]}`
+        this.title = `Goodbye ${
+          user?.name.split(' ').length ? user?.name.split(' ')[0] : user?.name
+        }`
         this.message = `${user?.companyName} - ${user?.profileName}`
         this.fullName = user?.name
+        this.showActions = false
         this.playSound('success')
         break
       case Notification.CODE_NOT_RECOGNIZED:
         this.isVisible = true
         this.type = 'error'
         this.title = 'Code not recognized'
+        this.showActions = false
         this.playSound('error')
         break
       case Notification.NOT_REGISTER:
@@ -45,6 +56,7 @@ export class NotificationStore {
         this.title = "Attendee didn't register"
         this.message = `${user?.companyName} - ${user?.profileName}`
         this.fullName = user?.name
+        this.showActions = true
         this.playSound('error')
         break
       case Notification.REGISTER_FOR_DIFFERENT_DATE:
@@ -53,11 +65,23 @@ export class NotificationStore {
         this.title = 'Attendee registered for a different date'
         this.message = `${user?.companyName} - ${user?.profileName}`
         this.fullName = user?.name
+        this.showActions = true
+        this.playSound('error')
+        break
+      case Notification.REGISTER_FOR_DIFFERENT_DATE_EXHIBITOR:
+        this.isVisible = true
+        this.type = 'warn'
+        this.title = 'Attendee registered for a different date'
+        this.message = `${user?.companyName} - ${user?.profileName}`
+        this.fullName = user?.name
+        this.description =
+          'Please update your registration at the reception desk.'
         this.playSound('error')
         break
       default:
         this.type = 'error'
         this.title = 'Code not recognized'
+        this.showActions = false
         this.playSound('error')
         break
     }
@@ -93,5 +117,6 @@ export enum Notification {
   CHECK_OUT = 'CHECK_OUT',
   NOT_REGISTER = 'NOT_REGISTER',
   REGISTER_FOR_DIFFERENT_DATE = 'REGISTER_FOR_DIFFERENT_DATE',
+  REGISTER_FOR_DIFFERENT_DATE_EXHIBITOR = 'REGISTER_FOR_DIFFERENT_DATE_EXHIBITOR',
   CODE_NOT_RECOGNIZED = 'CODE_NOT_RECOGNIZED',
 }

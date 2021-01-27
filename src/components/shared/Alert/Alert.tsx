@@ -22,6 +22,8 @@ const Alert = ({
   title,
   message,
   fullName,
+  description,
+  showActions,
   onNoPress,
   onYesPress,
 }: AlertProps) => {
@@ -56,7 +58,7 @@ const Alert = ({
           <AlertTitle>{title}</AlertTitle>
         </AlertHeader>
         <AlertBody contentContainerStyle={styles.scrollContainer}>
-          {type === 'warn' && (
+          {showActions && (
             <AlertActionWrapper>
               <AlertText>Check in this attendee anyway?</AlertText>
               <ButtonsContainer>
@@ -68,6 +70,10 @@ const Alert = ({
                 </AlertButton>
               </ButtonsContainer>
             </AlertActionWrapper>
+          )}
+
+          {!!description && (
+            <AlertText style={{ marginBottom: 10 }}>{description}</AlertText>
           )}
 
           <AlertText>{fullName}</AlertText>
@@ -85,6 +91,8 @@ export type AlertProps = {
   title: string
   fullName?: string
   message?: string
+  description?: string
+  showActions?: boolean
   onYesPress?: () => void
   onNoPress?: () => void
 }

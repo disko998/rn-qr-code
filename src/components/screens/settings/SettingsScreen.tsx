@@ -79,6 +79,7 @@ const SettingsScreen = observer(() => {
             placeholder="https://example.com"
             value={form.values.url}
             onChangeText={form.handleChange('url')}
+            onBlur={() => settings.loadEvents(form.values.url)}
             errorMessage={form.errors.url}
           />
         </Section>

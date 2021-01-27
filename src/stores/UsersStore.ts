@@ -106,7 +106,7 @@ export class UsersStore {
         data: { userIsRegisteredForEvent },
       } = await query(settings.url, queries.validateInput, { input })
 
-      if (userIsRegisteredForEvent) {
+      if (!userIsRegisteredForEvent) {
         return Notification.NOT_REGISTER
       }
 

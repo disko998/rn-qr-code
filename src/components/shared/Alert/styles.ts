@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     width: '90%',
     height: '80%',
     maxWidth: isTablet() ? 600 : 500,
-    maxHeight: isTablet() ? 300 : 280,
+    maxHeight: isTablet() ? 300 : 300,
     padding: 0,
     overflow: 'hidden',
     borderRadius: 10,
@@ -47,13 +47,13 @@ export const AlertBody = styled.ScrollView`
 
 export const AlertText = styled.Text<{ color?: string }>`
   text-align: center;
-  font-size: ${isTablet() ? 20 : 18}px;
+  font-size: ${isTablet() ? 20 : 16}px;
   font-weight: 400;
   color: ${(props) => props.theme.colors.black};
 `
 
 export const AlertTitle = styled(AlertText)`
-  font-size: ${isTablet() ? 26 : 23}px;
+  font-size: ${isTablet() ? 26 : 22}px;
   font-weight: bold;
   color: ${(props) => props.theme.colors.light};
 `

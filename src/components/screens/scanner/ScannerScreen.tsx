@@ -111,10 +111,12 @@ const ScannerScreen = observer(() => {
         message={notification.message}
         fullName={notification.fullName}
         type={notification.type}
+        description={notification.description}
         isVisible={notification.isVisible}
+        showActions={notification.showActions}
         onDismiss={() => notification.dismiss()}
-        onNoPress={() => notification.dismiss()}
-        onYesPress={() => notification.dismiss()}
+        onNoPress={() => notification.onNoPress && notification.onNoPress()}
+        onYesPress={() => notification.onYesPress && notification.onYesPress()}
       />
     </Wrapper>
   )
