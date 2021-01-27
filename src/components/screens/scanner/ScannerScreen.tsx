@@ -50,7 +50,7 @@ const ScannerScreen = observer(() => {
       __DEV__ && console.log(e)
 
       if (e.type === 'QR_CODE') {
-        users.scanUserTicket(e.data, isConnected)
+        users.scanUserTicket('RQ4Q1CY', isConnected)
       }
     },
     [isConnected, users],

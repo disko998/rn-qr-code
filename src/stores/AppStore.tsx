@@ -5,7 +5,7 @@ import { SettingsStore } from './SettingsStore'
 import { UsersStore } from './UsersStore'
 import { NotificationStore } from './NotificationStore'
 
-type AppStoreContextValue = {
+export type AppStoreContextValue = {
   settings: SettingsStore
   users: UsersStore
   notification: NotificationStore
@@ -23,10 +23,7 @@ const AppStoreContext = React.createContext<AppStoreContextValue>(
 export const AppStoreProvider: React.FC<React.PropsWithChildren<{}>> = ({
   children,
 }) => {
-  const isConnected = useConnection(() => {
-    settings.loadEvents()
-    users.consumePending()
-  })
+  const isConnected = useConnection()
 
   return (
     <AppStoreContext.Provider

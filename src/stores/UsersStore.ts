@@ -91,16 +91,23 @@ export class UsersStore {
     notification.show(notify, user)
   }
 
-  consumePending() {
-    this.pendingInputs.map(async (input) => {
-      const notify = await this.consumeTicket(input, true)
-    })
+  async consumePending() {
+    await Promise.all(
+      this.pendingInputs.map(async (input) => {
+        const notify = await this.consumeTicket(input)
+
+        this.pendingInputs = this.pendingInputs.filter(
+          (i) => i.userId !== input.userId,
+        )
+        await AsyncStorage.setItem(
+          '@pending',
+          JSON.stringify(this.pendingInputs),
+        )
+      }),
+    )
   }
 
-  async consumeTicket(
-    input: Input,
-    isPending?: boolean,
-  ): Promise<Notification> {
+  async consumeTicket(input: Input): Promise<Notification> {
     try {
       const {
         data: { userIsRegisteredForEvent },
@@ -111,16 +118,6 @@ export class UsersStore {
       }
 
       const { data } = await query(settings.url, queries.scanUser, { input })
-
-      if (isPending) {
-        this.pendingInputs = this.pendingInputs.filter(
-          (i) => i.userId !== input.userId,
-        )
-        await AsyncStorage.setItem(
-          '@pending',
-          JSON.stringify(this.pendingInputs),
-        )
-      }
 
       return input.inOut === CheckState.CHECK_IN
         ? Notification.CHECK_IN
