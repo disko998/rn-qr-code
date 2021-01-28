@@ -104,7 +104,10 @@ const ScannerScreen = observer(() => {
         }
       />
 
-      <BottomBarImage source={{ uri: mapImages.bottom }} resizeMode="cover" />
+      <BottomBarImage
+        source={{ uri: mapImages.bottom }}
+        resizeMode={screenOrientation === 'LANDSCAPE' ? 'stretch' : 'cover'}
+      />
 
       <Notification
         title={notification.title}
