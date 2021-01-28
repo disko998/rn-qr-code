@@ -24,9 +24,7 @@ export class NotificationStore {
       case Notification.CHECK_IN:
         this.isVisible = true
         this.type = 'success'
-        this.title = `Welcome ${
-          user?.name.split(' ').length ? user?.name.split(' ')[0] : user?.name
-        }`
+        this.title = `Welcome ${user?.name.split(' ')[0]}`
         this.message = `${user?.companyName} - ${user?.profileName}`
         this.fullName = user?.name
         this.showActions = false
@@ -35,9 +33,7 @@ export class NotificationStore {
       case Notification.CHECK_OUT:
         this.isVisible = true
         this.type = 'info'
-        this.title = `Goodbye ${
-          user?.name.split(' ').length ? user?.name.split(' ')[0] : user?.name
-        }`
+        this.title = `Goodbye ${user?.name.split(' ')[0]}`
         this.message = `${user?.companyName} - ${user?.profileName}`
         this.fullName = user?.name
         this.showActions = false

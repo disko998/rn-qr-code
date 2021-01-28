@@ -94,7 +94,7 @@ export class UsersStore {
   async consumePending() {
     await Promise.all(
       this.pendingInputs.map(async (input) => {
-        const notify = await this.consumeTicket(input)
+        const notify = await this.consumeTicket(input, false)
 
         this.pendingInputs = this.pendingInputs.filter(
           (i) => i.userId !== input.userId,
@@ -107,21 +107,32 @@ export class UsersStore {
     )
   }
 
-  async consumeTicket(input: Input): Promise<Notification> {
+  async consumeTicket(input: Input, validate = true): Promise<Notification> {
     try {
-      const {
-        data: { register, isExhibitor },
-      } = await query(settings.url, queries.validateInput, { input })
+      if (validate) {
+        const res = await query(settings.url, queries.validateInput, {
+          input,
+        })
 
-      if (!register) {
-        return input.reference
-          ? Notification.NOT_REGISTER
-          : isExhibitor
-          ? Notification.REGISTER_FOR_DIFFERENT_DATE_EXHIBITOR
-          : Notification.REGISTER_FOR_DIFFERENT_DATE
+        const { registered, isExhibitor } = res.data.userIsRegisteredForEvent
+
+        if (!registered) {
+          // set action and display warn popup
+          notification.onNoPress = () => notification.dismiss()
+          notification.onYesPress = () => {
+            this.consumeTicket(input, false)
+            notification.dismiss()
+          }
+
+          return input.reference
+            ? Notification.NOT_REGISTER
+            : isExhibitor
+            ? Notification.REGISTER_FOR_DIFFERENT_DATE_EXHIBITOR
+            : Notification.REGISTER_FOR_DIFFERENT_DATE
+        }
       }
 
-      const { data } = await query(settings.url, queries.scanUser, { input })
+      await query(settings.url, queries.scanUser, { input })
 
       return input.inOut === CheckState.CHECK_IN
         ? Notification.CHECK_IN

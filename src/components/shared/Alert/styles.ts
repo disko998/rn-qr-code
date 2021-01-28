@@ -47,7 +47,7 @@ export const AlertBody = styled.ScrollView`
 
 export const AlertText = styled.Text<{ color?: string }>`
   text-align: center;
-  font-size: ${isTablet() ? 20 : 16}px;
+  font-size: ${isTablet() ? 20 : 18}px;
   font-weight: 400;
   color: ${(props) => props.theme.colors.black};
 `
