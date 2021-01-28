@@ -3,7 +3,6 @@ import { CheckBox } from 'react-native-elements'
 import { useFormik } from 'formik'
 import { observer } from 'mobx-react-lite'
 import Toast from 'react-native-simple-toast'
-import _ from 'lodash'
 import { useNavigation } from '@react-navigation/native'
 
 import { settingsSchema } from './schema'
@@ -11,6 +10,7 @@ import { appTheme } from '../../../styles'
 import { Input } from '../../shared'
 import { FormWrapper, Section, styles, StyledScroll } from './styles'
 import { useAppStore, CheckState } from '../../../stores'
+import { DropDownItem } from '../../shared/Input/Input'
 
 const SettingsScreen = observer(() => {
   const navigation = useNavigation()
@@ -22,18 +22,38 @@ const SettingsScreen = observer(() => {
     })
   }, [navigation])
 
-  const eventItems = React.useMemo(
-    () => settings.events.map((e) => ({ value: e.id, label: e.name['en'] })),
-    [settings.events],
-  )
+  const eventItems = React.useMemo(() => {
+    const sideEvents: DropDownItem[] = []
+
+    const mainEvents = settings.events.map((event) => {
+      event.sideEvents.map((sideEvent) =>
+        sideEvents.push({
+          value: JSON.stringify({
+            ...event,
+            sideEventReference: sideEvent.reference,
+          }),
+          label: sideEvent.name.fr,
+        }),
+      )
+
+      return {
+        value: JSON.stringify(event),
+        label: event.name['en'],
+      }
+    })
+
+    const events = [...mainEvents, ...sideEvents]
+
+    return events
+  }, [settings.events])
 
   const form = useFormik({
     initialValues: {
       deviceName: settings.deviceName,
       event: settings.event
-        ? settings.event.id
+        ? JSON.stringify(settings.event)
         : settings.events.length
-        ? settings.events[0].id
+        ? JSON.stringify(settings.events[0])
         : '',
       url: settings.url,
       checkState: settings.checkState,
@@ -43,10 +63,9 @@ const SettingsScreen = observer(() => {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: (values) => {
-      const event = _.find(settings.events, { id: values.event })
       settings.updateSettings({
         ...values,
-        event,
+        event: JSON.parse(values.event),
       })
 
       Toast.show('Changes Saved!', Toast.LONG, ['UIAlertController'])

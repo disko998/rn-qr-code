@@ -14,6 +14,10 @@ export const queries = {
         imageBottomMobile
         imageTopTablet
         imageBottomTablet
+        sideEvents {
+          reference
+          name
+        }
       }
     }
   `,
@@ -51,7 +55,10 @@ export const queries = {
   `,
   validateInput: gql`
     query($input: ScanUserOnEventInput!) {
-      userIsRegisteredForEvent(input: $input)
+      userIsRegisteredForEvent(input: $input) {
+        registered
+        isExhibitor
+      }
     }
   `,
 }

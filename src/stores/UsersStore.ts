@@ -1,6 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import _ from 'lodash'
 
 import { queries, query } from '../config'
 import { notification, settings } from './AppStore'
@@ -53,8 +52,7 @@ export class UsersStore {
   }
 
   async scanUserTicket(registrationId: string, isConnected: boolean) {
-    const user = _.find(
-      this.users,
+    const user = this.users.find(
       (o) => o.badge.registrationId === registrationId,
     )
 
@@ -68,7 +66,9 @@ export class UsersStore {
       date: new Date(),
       inOut: settings.checkState,
       device: settings.deviceName,
-      reference: null,
+      reference: settings.event?.sideEventReference
+        ? settings.event?.sideEventReference
+        : null,
     }
 
     __DEV__ && console.log(registrationId, input)
@@ -110,11 +110,15 @@ export class UsersStore {
   async consumeTicket(input: Input): Promise<Notification> {
     try {
       const {
-        data: { userIsRegisteredForEvent },
+        data: { register, isExhibitor },
       } = await query(settings.url, queries.validateInput, { input })
 
-      if (!userIsRegisteredForEvent) {
-        return Notification.NOT_REGISTER
+      if (!register) {
+        return input.reference
+          ? Notification.NOT_REGISTER
+          : isExhibitor
+          ? Notification.REGISTER_FOR_DIFFERENT_DATE_EXHIBITOR
+          : Notification.REGISTER_FOR_DIFFERENT_DATE
       }
 
       const { data } = await query(settings.url, queries.scanUser, { input })
@@ -155,5 +159,5 @@ export type Input = {
   date: Date
   inOut: CheckState
   device: string
-  reference: null
+  reference: null | string
 }
