@@ -101,10 +101,10 @@ export type Event = {
 export type SideEvent = {
   reference: string
   name: {
-    en?: string
-    fr?: string
-    nl?: string
-    pl?: string
-    it?: string
+    en: string
+    fr: string
+    nl: string
+    pl: string
+    it: string
   }
 }

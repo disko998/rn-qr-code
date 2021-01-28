@@ -11,6 +11,7 @@ import { Input } from '../../shared'
 import { FormWrapper, Section, styles, StyledScroll } from './styles'
 import { useAppStore, CheckState } from '../../../stores'
 import { DropDownItem } from '../../shared/Input/Input'
+import { getObjValues } from '../../../util/helper'
 
 const SettingsScreen = observer(() => {
   const navigation = useNavigation()
@@ -32,7 +33,7 @@ const SettingsScreen = observer(() => {
             ...event,
             sideEventReference: sideEvent.reference,
           }),
-          label: sideEvent.name.fr,
+          label: getObjValues(sideEvent.name)[0],
         }),
       )
 
