@@ -58,8 +58,7 @@ export const Select = ({ label, items, value, onValueChange }: SelectProps) => {
             onValueChange={onValueChange}
             selectedValue={value}
             style={styles.picker}
-            mode="dialog"
-            prompt="Events">
+            mode="dialog">
             {items.map((item) => (
               <Picker.Item
                 key={item.value}

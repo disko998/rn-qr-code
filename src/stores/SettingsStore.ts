@@ -31,19 +31,18 @@ export class SettingsStore {
     })
   }
 
-  async updateSettings(settings: Settings | null): Promise<void> {
+  async updateSettings(settings: Partial<Settings> | null): Promise<void> {
     if (settings) {
       const { cameraType, checkState, deviceName, event, url } = settings
 
-      this.cameraType = cameraType
-      this.checkState = checkState
-      this.deviceName = deviceName
-      this.event = event
-      this.url = url
+      this.cameraType = cameraType || this.cameraType
+      this.checkState = checkState || this.checkState
+      this.deviceName = deviceName || this.deviceName
+      this.url = url || this.url
+      this.event = event || this.event
       this.initSettings = false
 
       AsyncStorage.setItem('@settings', JSON.stringify(settings))
-
       users.loadUsers()
     } else {
       this.initSettings = true
@@ -54,14 +53,13 @@ export class SettingsStore {
     try {
       const res = await query(fromUrl || this.url, queries.events)
 
-      runInAction(() => {
-        this.events = res.data.scanningAppEvents
-      })
+      this.events = res.data.scanningAppEvents
 
-      AsyncStorage.setItem(
-        '@events',
-        JSON.stringify(res.data.scanningAppEvents),
-      )
+      const event = this.events.find((e) => e.id === this.event?.id)
+
+      this.updateSettings({ event })
+
+      AsyncStorage.setItem('@events', JSON.stringify(this.events))
     } catch (error) {
       __DEV__ && console.error(error)
     }
@@ -107,4 +105,12 @@ export type SideEvent = {
     pl: string
     it: string
   }
+}
+
+const initialStoreState: Settings = {
+  cameraType: 'front',
+  checkState: CheckState.CHECK_IN,
+  deviceName: '',
+  event: undefined,
+  url: DEFAULT_URL,
 }

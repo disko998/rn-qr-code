@@ -9,11 +9,11 @@ export class NotificationStore {
   message: string = ''
   fullName?: string = ''
   isVisible: boolean = false
+  showActions: boolean = false
   type: AlertType = 'success'
   description?: string = ''
-  onYesPress?: () => void = undefined
-  onNoPress?: () => void = undefined
-  showActions: boolean = false
+  onYesPress: () => void = () => {}
+  onNoPress: () => void = () => {}
 
   constructor() {
     makeAutoObservable(this)

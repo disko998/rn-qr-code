@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Alert } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import QRCodeScanner from 'react-native-qrcode-scanner'
 import { observer } from 'mobx-react-lite'
@@ -108,8 +108,8 @@ const ScannerScreen = observer(() => {
         isVisible={notification.isVisible}
         showActions={notification.showActions}
         onDismiss={() => notification.dismiss()}
-        onNoPress={() => notification.onNoPress && notification.onNoPress()}
-        onYesPress={() => notification.onYesPress && notification.onYesPress()}
+        onNoPress={() => notification.onNoPress()}
+        onYesPress={() => notification.onYesPress()}
       />
     </Wrapper>
   )
