@@ -1,10 +1,9 @@
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Alert } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import QRCodeScanner from 'react-native-qrcode-scanner'
 import { observer } from 'mobx-react-lite'
 import { isTablet } from 'react-native-device-info'
-import Orientation from 'react-native-orientation'
 
 import { useAppStore } from '../../../stores'
 import { Alert as Notification } from '../../shared'
@@ -38,10 +37,7 @@ const ScannerScreen = observer(() => {
   const onRead = React.useCallback(
     (e: any) => {
       __DEV__ && console.log(e)
-
-      if (e.type === 'QR_CODE') {
-        users.scanUserTicket(e.data, isConnected)
-      }
+      users.scanUserTicket(e.data, isConnected)
     },
     [isConnected, users],
   )
