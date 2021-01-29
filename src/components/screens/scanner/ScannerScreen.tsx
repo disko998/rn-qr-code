@@ -37,9 +37,12 @@ const ScannerScreen = observer(() => {
   const onRead = React.useCallback(
     (e: any) => {
       __DEV__ && console.log(e)
+
+      if (e.type === 'UPC_E' || notification.isVisible) return
+
       users.scanUserTicket(e.data, isConnected)
     },
-    [isConnected, users],
+    [isConnected, users, notification.isVisible],
   )
 
   const mapImages = React.useMemo(
@@ -75,6 +78,7 @@ const ScannerScreen = observer(() => {
       </Header>
 
       <QRCodeScanner
+        fadeIn
         reactivate={true}
         reactivateTimeout={SCANNING_DELAY}
         ref={(node: any) => setScanner(node)}
