@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import { settingsSchema } from './schema'
 import { appTheme } from '../../../styles'
-import { Input } from '../../shared'
+import { Input, Select } from '../../shared'
 import { FormWrapper, Section, styles, StyledScroll } from './styles'
 import { useAppStore, CheckState } from '../../../stores'
 import { DropDownItem } from '../../shared/Input/Input'
@@ -86,7 +86,7 @@ const SettingsScreen = observer(() => {
           />
         </Section>
         <Section>
-          <Input.Select
+          <Select
             label="Event"
             value={form.values.event}
             items={eventItems}

@@ -25,25 +25,15 @@ import {
 } from './styles'
 
 const ScannerScreen = observer(() => {
-  const { settings, users, notification, isConnected } = useAppStore()
+  const {
+    settings,
+    users,
+    notification,
+    isConnected,
+    screenOrientation,
+  } = useAppStore()
   const navigation = useNavigation()
   const [scanner, setScanner] = React.useState(React.createRef())
-  const [screenOrientation, setScreenOrientation] = React.useState(
-    Orientation.getInitialOrientation(),
-  )
-
-  const orientationDidChange = React.useCallback(
-    (orientation: Orientation.orientation) => {
-      setScreenOrientation(orientation)
-    },
-    [],
-  )
-
-  React.useEffect(() => {
-    Orientation.addOrientationListener(orientationDidChange)
-
-    return () => Orientation.removeOrientationListener(orientationDidChange)
-  }, [orientationDidChange])
 
   const onRead = React.useCallback(
     (e: any) => {

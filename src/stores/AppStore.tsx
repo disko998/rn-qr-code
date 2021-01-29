@@ -1,6 +1,7 @@
 import React from 'react'
-import { useConnection } from '../hooks'
+import Orientation from 'react-native-orientation'
 
+import { useConnection } from '../hooks'
 import { SettingsStore } from './SettingsStore'
 import { UsersStore } from './UsersStore'
 import { NotificationStore } from './NotificationStore'
@@ -10,6 +11,7 @@ export type AppStoreContextValue = {
   users: UsersStore
   notification: NotificationStore
   isConnected: boolean
+  screenOrientation: Orientation.orientation
 }
 
 export const settings = new SettingsStore()
@@ -24,10 +26,26 @@ export const AppStoreProvider: React.FC<React.PropsWithChildren<{}>> = ({
   children,
 }) => {
   const isConnected = useConnection()
+  const [screenOrientation, setScreenOrientation] = React.useState(
+    Orientation.getInitialOrientation(),
+  )
+
+  const orientationDidChange = React.useCallback(
+    (orientation: Orientation.orientation) => {
+      setScreenOrientation(orientation)
+    },
+    [],
+  )
+
+  React.useEffect(() => {
+    Orientation.addOrientationListener(orientationDidChange)
+
+    return () => Orientation.removeOrientationListener(orientationDidChange)
+  }, [orientationDidChange])
 
   return (
     <AppStoreContext.Provider
-      value={{ settings, users, notification, isConnected }}>
+      value={{ settings, users, notification, isConnected, screenOrientation }}>
       {children}
     </AppStoreContext.Provider>
   )

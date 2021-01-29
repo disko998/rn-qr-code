@@ -40,13 +40,21 @@ Input.Button = ({ label, ...btnProps }: ButtonProps) => {
   )
 }
 
-Input.Select = ({ label, items, value, onValueChange }: SelectProps) => {
+export const Select = ({ label, items, value, onValueChange }: SelectProps) => {
+  const [parentWidth, setParentWidth] = React.useState(0)
+
+  const onPageLayout = (event: any) => {
+    const { width, height } = event.nativeEvent.layout
+    setParentWidth(width)
+  }
+
   return (
     <Container>
       {label && <Label>{label}</Label>}
-      <InputWrapper>
+      <InputWrapper onLayout={onPageLayout}>
         {Platform.OS === 'android' ? (
           <Picker
+            onLayout={onPageLayout}
             onValueChange={onValueChange}
             selectedValue={value}
             style={styles.picker}
@@ -62,13 +70,13 @@ Input.Select = ({ label, items, value, onValueChange }: SelectProps) => {
           </Picker>
         ) : (
           <RNPickerSelect
-            placeholder={{ label: 'Select event' }}
+            placeholder={{}}
             onValueChange={onValueChange}
             items={items}
             value={value}
             style={{
               inputIOS: styles.inputPicker,
-              inputIOSContainer: styles.pickerContainer,
+              inputIOSContainer: { width: parentWidth },
               iconContainer: styles.iconContainer,
             }}
             Icon={() => (
